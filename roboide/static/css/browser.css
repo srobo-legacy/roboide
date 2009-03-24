@@ -1,0 +1,96 @@
+#file-browser {
+	background-color: #253571;
+	color: #fff;
+	position: absolute;
+	left: 20%;
+	top: 30%;
+	padding: 0px;
+	margin: 0px;
+	width: 60%;
+	display: none;
+	text-align: left;
+	z-index: 100;
+}
+#selected-dir {
+	display: block;
+	color: #ffffff;
+	font-size: 1.6em;
+	font-weight: bold;
+	margin: 1%;
+	padding: 1%;
+	width:96%;
+}
+#left-pane, #right-pane {
+	display: block;
+	width: 40%;
+	height: 200px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	background-color: #DFDBD8;
+	margin-left:2.5%;
+	margin-right:2.5%;
+	margin-top:10px;
+	margin-bottom:10px;
+	border: 5px solid #ffffff;
+	float: left;
+}
+
+#right-pane ul, #left-pane ul{
+	background-color: #EEEEEE;
+	color: #000;
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+}
+#left-pane ul {
+	padding-left: 15px;
+	cursor: pointer;
+}
+#left-pane li, #right-pane li {
+	padding:1px 0 1px 5px;
+	border-bottom: 1px dashed #DFDBD8;
+}
+#left-pane li:hover {
+	background-color: #ffffff;
+}
+#browser-status {
+	display: block;
+	font-size: 1.2em;
+	color: #ffffff;
+	margin: 10px;
+	float: left;
+	width: 500px;
+	overflow: visible;
+}
+#new-file-name {
+	display: block;
+	font-size: 1em;
+	font-weight: bold;
+	/* color: #000000; */
+	margin: 10px;
+	width: 250px;
+	float: left;	
+}
+#save-new-file, #cancel-new-file {
+	display: block;
+	font-size: 1em;
+	font-weight: bold;
+	/* color: #000000; */
+	margin: 10px;
+	float: left;	
+}
+#new-commit-msg {
+	display:block;
+	width: 87.5%;
+	height: 50px;
+	background-color: #DFDBD8;
+	color: #000;
+	margin-top:10px;
+	margin-bottom: 10px;
+	margin-left:2.5%;
+	margin-right:2.5%;
+	border: 5px solid #ffffff;
+	float: left;	
+}
+

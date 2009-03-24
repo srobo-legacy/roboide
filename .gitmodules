@@ -1,0 +1,6 @@
+[submodule "dummy"]
+	path = dummy
+	url = ../pyenv-dummy.git
+[submodule "roboide/sr"]
+	path = roboide/sr
+	url = ../srusers.git
