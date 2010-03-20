@@ -142,8 +142,8 @@ function on_doc_keydown(ev) {
 	else
 		var e = ev;
 
+	var stop = false;
 	if( e.altKey ) {
-		var stop;
 		switch(e.keyCode) {
 			case 33://PageUp
 				tabbar.prev_tab();
@@ -153,8 +153,12 @@ function on_doc_keydown(ev) {
 				tabbar.next_tab();
 				stop = true;
 				break;
-			default:
-				stop = false;
+		}
+	} else if( e.ctrlKey ) {
+		switch(e.keyCode) {
+			case 69://E
+				projpage.clickExportProject();
+				stop = true;
 				break;
 		}
 	}
