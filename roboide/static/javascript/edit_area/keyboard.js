@@ -2,29 +2,10 @@ var EA_keys = {8:"Retour arriere",9:"Tabulation",12:"Milieu (pave numerique)",13
 
 
 
-function keyUp(e){
-	if(!e){	// if IE
-		e=event;
-	}
-	editArea.execCommand("onkeyup", e);
-
-	// send the event to the plugins
-	for(var i in editArea.plugins){
-		if(typeof(editArea.plugins[i].onkeyup)=="function"){
-			if(editArea.plugins[i].onkeyup(e)===false){ // stop propagating
-				if(editArea.isIE)
-					e.keyCode=0;
-				return false;
-			}
-		}
-	}
-}
-
 function keyDown(e){
 	if(!e){	// if IE
 		e=event;
 	}
-	editArea.execCommand("onkeydown", e);
 	
 	// send the event to the plugins
 	for(var i in editArea.plugins){
@@ -46,10 +27,10 @@ function keyDown(e){
 	
 	var low_letter= letter.toLowerCase();
 			
-	if(letter=="Page up" && !editArea.isOpera){
+	if(letter=="Page up" && !AltPressed(e) && !editArea.isOpera){
 		editArea.execCommand("scroll_page", {"dir": "up", "shift": ShiftPressed(e)});
 		use=true;
-	}else if(letter=="Page down" && !editArea.isOpera){
+	}else if(letter=="Page down" && !AltPressed(e) && !editArea.isOpera){
 		editArea.execCommand("scroll_page", {"dir": "down", "shift": ShiftPressed(e)});
 		use=true;
 	}else if(editArea.is_editable==false){

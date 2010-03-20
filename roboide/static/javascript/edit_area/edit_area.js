@@ -118,7 +118,8 @@
 				option.value= syntax;
 				if(syntax==s['syntax'])
 					option.selected= "selected";
-				option.innerHTML= t.get_translation("syntax_" + syntax, "word");
+				dispSyntax	= parent.editAreaLoader.syntax_display_name[ syntax ];
+				option.innerHTML= typeof( dispSyntax ) == 'undefined' ? syntax.substring( 0, 1 ).toUpperCase() + syntax.substring( 1 ) : dispSyntax;//t.get_translation("syntax_" + syntax, "word");
 				syntax_selec.appendChild(option);
 			}
 		}
@@ -173,14 +174,12 @@
 			_$("editor").onkeypress	= keyDown;
 		else
 			_$("editor").onkeydown	= keyDown;
-		_$("editor").onkeyup	= keyUp;
 
 		for(var i=0; i<t.inlinePopup.length; i++){
 			if(t.isOpera)
 				_$(t.inlinePopup[i]["popup_id"]).onkeypress	= keyDown;
 			else
 				_$(t.inlinePopup[i]["popup_id"]).onkeydown	= keyDown;
-			_$(t.inlinePopup[i]["popup_id"]).onkeyup	= keyUp;
 		}
 		
 		if(s["allow_resize"]=="both" || s["allow_resize"]=="x" || s["allow_resize"]=="y")
@@ -383,8 +382,9 @@
 					this.line_number++;
 				}
 				destDiv.innerHTML= destDiv.innerHTML + newLines;
-				
-				this.fixLinesHeight( this.textarea.value, start, -1 );
+				if(this.settings['word_wrap']){
+					this.fixLinesHeight( this.textarea.value, start, -1 );
+				}
 			}
 		
 			//4) be sure the text is well displayed
@@ -420,14 +420,6 @@
 				if(this.settings["change_callback"].length>0)
 					eval("parent."+this.settings["change_callback"]+"('"+ this.id +"');");
 				break;		
-			case "onkeydown":
-				if(this.settings["keydown_callback"].length>0)
-					eval("parent."+this.settings["keydown_callback"]+"(param);");
-				break;
-			case "onkeyup":
-				if(this.settings["keyup_callback"].length>0)
-					eval("parent."+this.settings["keyup_callback"]+"(param);");
-				break;
 			case "EA_load":
 				if(this.settings["EA_load_callback"].length>0)
 					eval("parent."+this.settings["EA_load_callback"]+"('"+ this.id +"');");
