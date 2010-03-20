@@ -287,6 +287,7 @@ class Root(controllers.RootController):
             delta = b.get_revision_delta(b.revision_id_to_revno(revision.revision_id))
             return delta.touches_file_id(fileid)
         revisions = filter(revisionTouchesFile, revisions)
+        revisions.reverse()
 
         #Calculate offsets for paging
         try:
@@ -303,7 +304,6 @@ class Root(controllers.RootController):
             overflow = maxval/10
 
         revisions = revisions[start:end]
-        revisions.reverse()
 
         return dict(  path=file_path, overflow=overflow, offset=offset, authors=authors,
                       history=[{"author" : r.committer,
