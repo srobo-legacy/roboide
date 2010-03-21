@@ -45,6 +45,9 @@ var switchboardpage = null;
 // The Admin page
 var adminpage = null;
 
+// The Page that shows what the robot can see
+var robovispage = null;
+
 // The about box
 var about = null;
 
@@ -100,6 +103,9 @@ function load_gui() {
 
 	//The Admin page - this must happen before populate_shortcuts_box is called
 	adminpage = new Admin();
+
+	//The RoboVis page - this must happen before populate_shortcuts_box is called
+	robovispage = new RoboVis();
 
 	populate_shortcuts_box();
 
@@ -203,6 +209,11 @@ function populate_shortcuts_box() {
 	var short3_li = LI(null, short3_a);
 	connect( short3_li, "onclick", bind(switchboardpage.init, switchboardpage) );
 	shortcuts.push(short3_li);
+
+	var robovis_a = A( {"title": "See what the robot sees"},  "View RoboVis" );
+	var robovis_li = LI(null, robovis_a);
+	connect( robovis_li, "onclick", bind(robovispage.init, robovispage) );
+	shortcuts.push(robovis_li);
 
 	if(user.can_admin()) {
 		var admin_a = A( {"title": "IDE Admin"},  "Administration" );

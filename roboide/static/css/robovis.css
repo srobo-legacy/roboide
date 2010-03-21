@@ -1,0 +1,18 @@
+#robovis-page {
+	width: 90%;
+	padding-left: 5%;
+	padding-right: 5%;
+	display: none;
+}
+
+#robovis-blobs-box {
+	margin: 10px;
+	outline: 1px solid black;
+	position: relative;
+	width: 100px;
+	height: 100px;
+}
+#robovis-blobs-box div {
+	border: 1px solid;
+	position: absolute;
+}
