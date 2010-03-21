@@ -45,7 +45,9 @@ class Feed(FeedController):
 def get_version():
     p = subprocess.Popen( ["git", "log", "-1", "--format=\"%h on %aD\""],
                           stdout = subprocess.PIPE,
-                          stderr = subprocess.PIPE )
+                          stderr = subprocess.PIPE,
+                          cwd = os.path.join( os.path.abspath( os.path.dirname(__file__) ),
+                                              "../" ) )
     output = p.communicate()
     rval = p.wait()
     ver = output[0].strip()[1:-7]
