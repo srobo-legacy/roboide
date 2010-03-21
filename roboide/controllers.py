@@ -43,14 +43,14 @@ class Feed(FeedController):
         )
 
 def get_version():
-    p = subprocess.Popen( ["svnversion", os.path.abspath(os.path.dirname(__file__)+'/..')],
+    p = subprocess.Popen( ["git", "log", "-1", "--format=\"%h on %aD\""],
                           stdout = subprocess.PIPE,
                           stderr = subprocess.PIPE )
     output = p.communicate()
     rval = p.wait()
-    ver = output[0].strip()
-    if ver != 'exported':
-        return 'r'+ver
+    ver = output[0].strip()[1:-7]
+    if rval == 0:
+        return ver
     return 'Unknown'
 
 class Root(controllers.RootController):
