@@ -9,7 +9,8 @@ sr_timeline_events = [{"date":"September 19, 2009", "title":"Kickstart", "desc":
 			{"date":"December 25, 2009", "title":"Christmas", "desc":"Merry Christmas"},
 			{"date":"February 6, 2010", "title":"Tech Day", "desc":"A chance to get help with the programming/electronics"},
 			{"date":"March 20, 2010", "title":"Tech Day 2", "desc":"Another chance to get help with the programming/electronics"},
-			{"date":"April 17, 2010", "title":"Competition", "desc":"The culmination of all your hard work (provisional date)"}]
+			{"date":"April 17, 2010", "title":"Competition, Day 1", "desc":"An optional chance to get into the arena and get additional help from mentors"},
+			{"date":"April 18, 2010", "title":"Competition, Day 2", "desc":"The culmination of all your hard work"}]
 sr_timeline_start = "September 19, 2009"
 sr_timeline_end = "April 17, 2010"
 
