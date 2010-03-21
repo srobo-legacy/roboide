@@ -5,7 +5,7 @@ import user as srusers
 import time
 
 sr_message_feed = "http://sr2010messages.blogspot.com/feeds/posts/default?alt=rss"
-sr_timeline_events = [{"date":"September 19, 2009", "title":"Kickstart", "desc":"Kickstart: Competition launch"},
+sr_timeline_events = [{"date":"September 19, 2009", "title":"KickStart", "desc":"KickStart: Competition launch"},
 			{"date":"December 25, 2009", "title":"Christmas", "desc":"Merry Christmas"},
 			{"date":"February 6, 2010", "title":"Tech Day", "desc":"A chance to get help with the programming/electronics"},
 			{"date":"March 20, 2010", "title":"Tech Day 2", "desc":"Another chance to get help with the programming/electronics"},
