@@ -5,6 +5,11 @@
 	width: 90%;
 }
 
+#robovis-page strong {
+	display: block;
+	margin: 15px 0 5px;
+}
+
 #robovis-blobs-box {
 	height: 100px;
 	margin: 10px;
