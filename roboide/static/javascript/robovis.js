@@ -167,7 +167,12 @@ RoboVis.prototype.Draw = function() {
 		var t = blob.y * scale;
 		var h = blob.height * scale;
 		var w = blob.width * scale;
-		var box = DIV({'style': 'left:'+l+'px; top:'+t+'px; height:'+h+'px; width:'+w+'px; border-color:'+blob.colour+'; background-color:'+blob.colour+';'});
+		var box = DIV({'style': 'left:'+l+'px; top:'+t+'px; height:'+h+'px; width:'+w+'px; border-color:'+blob.colour+'; background-color:'+blob.colour+';',
+			'title':'X: '+blob.x+
+				'; Y: '+blob.y+
+				'; Height: '+blob.height+
+				'; Width: '+blob.width+
+				'; Mass: '+blob.x * blob.y});
 		appendChildNodes('robovis-blobs-box', box);
 	}
 }
