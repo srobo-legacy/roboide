@@ -86,7 +86,7 @@ RoboVis.prototype.getBlobs = function() {
 RoboVis.prototype.Draw = function() {
 	replaceChildNodes('robovis-blobs-box');
 	var scale = 1;
-	for( var i in this.blobs ) {
+	for( var i=0; i<this.blobs.length; i++) {
 		var blob = this.blobs[i];
 		var l = blob.x * scale;
 		var t = blob.y * scale;
