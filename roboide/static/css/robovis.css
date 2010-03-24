@@ -22,3 +22,12 @@
 	border: 1px solid;
 	position: absolute;
 }
+#robovis-blobs-box.blobs div {
+	border: 1px solid white !important;
+}
+#robovis-blobs-box.overlay div {
+	background: transparent !important;
+}
+#robovis-blobs-box.image div {
+	display: none;
+}

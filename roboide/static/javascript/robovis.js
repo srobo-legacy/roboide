@@ -36,6 +36,10 @@ RoboVis.prototype.init = function() {
 		this._signals.push(connect( 'robovis-frame-down', "onclick", bind( this.decrementFrame, this ) ));
 		this._signals.push(connect( 'robovis-frame-up', "onclick", bind( this.incrementFrame, this ) ));
 
+		this._signals.push(connect( 'robovis-view-blobs', "onclick", bind( this.viewBlobs, this ) ));
+		this._signals.push(connect( 'robovis-view-overlay', "onclick", bind( this.viewOverlay, this ) ));
+		this._signals.push(connect( 'robovis-view-image', "onclick", bind( this.viewImage, this ) ));
+
 		/* Initialise indiviual page elements */
 		this.getBlobs(FRAMELIST);
 		this.Draw();
@@ -105,6 +109,24 @@ RoboVis.prototype.getBlobs = function(nodes) {
 }
 /* *****	End Student blog feed listing code	***** */
 
+/* *****	View switching code	***** */
+RoboVis.prototype.viewBlobs = function() {
+	removeElementClass('robovis-blobs-box', 'image');
+	removeElementClass('robovis-blobs-box', 'overlay');
+	addElementClass('robovis-blobs-box', 'blobs');
+}
+RoboVis.prototype.viewOverlay = function() {
+	removeElementClass('robovis-blobs-box', 'blobs');
+	removeElementClass('robovis-blobs-box', 'image');
+	addElementClass('robovis-blobs-box', 'overlay');
+}
+RoboVis.prototype.viewImage = function() {
+	removeElementClass('robovis-blobs-box', 'blobs');
+	removeElementClass('robovis-blobs-box', 'overlay');
+	addElementClass('robovis-blobs-box', 'image');
+}
+/* *****	End View switching code	***** */
+
 /* *****	Frame switching code	***** */
 RoboVis.prototype.incrementFrame = function() {
 	this.chooseFrame(this._chosenFrame + 1);
@@ -142,7 +164,7 @@ RoboVis.prototype.Draw = function() {
 		var t = blob.y * scale;
 		var h = blob.height * scale;
 		var w = blob.width * scale;
-		var box = DIV({'style': 'left:'+l+'px; top:'+t+'px; height:'+h+'px; width:'+w+'px; border-color:'+blob.colour+';'});
+		var box = DIV({'style': 'left:'+l+'px; top:'+t+'px; height:'+h+'px; width:'+w+'px; border-color:'+blob.colour+'; background-color:'+blob.colour+';'});
 		appendChildNodes('robovis-blobs-box', box);
 	}
 }
