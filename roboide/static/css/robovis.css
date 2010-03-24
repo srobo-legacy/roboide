@@ -11,9 +11,9 @@
 }
 
 #robovis-blobs-box {
+	border: 2px solid black;
 	height: 100px;
 	margin: 10px;
-	outline: 1px solid black;
 	position: relative;
 	width: 100px;
 }
