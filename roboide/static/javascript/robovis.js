@@ -28,13 +28,13 @@ RoboVis.prototype.init = function() {
 
 		/* Initialize a new tab for RoboVis - Do this only once */
 		this.tab = new Tab( "RoboVis" );
-		connect( this.tab, "onfocus", bind( this._onfocus, this ) );
-		connect( this.tab, "onblur", bind( this._onblur, this ) );
-		connect( this.tab, "onclickclose", bind( this._close, this ) );
+		this._signals.push(connect( this.tab, "onfocus", bind( this._onfocus, this ) ));
+		this._signals.push(connect( this.tab, "onblur", bind( this._onblur, this ) ));
+		this._signals.push(connect( this.tab, "onclickclose", bind( this._close, this ) ));
 		tabbar.add_tab( this.tab );
 
-		connect( 'robovis-frame-down', "onclick", bind( this.decrementFrame, this ) );
-		connect( 'robovis-frame-up', "onclick", bind( this.incrementFrame, this ) );
+		this._signals.push(connect( 'robovis-frame-down', "onclick", bind( this.decrementFrame, this ) ));
+		this._signals.push(connect( 'robovis-frame-up', "onclick", bind( this.incrementFrame, this ) ));
 
 		/* Initialise indiviual page elements */
 		this.getBlobs(FRAMELIST);
