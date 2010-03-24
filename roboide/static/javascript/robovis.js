@@ -129,6 +129,7 @@ RoboVis.prototype.chooseFrame = function(frame) {
 	this._blobs = this._frames[this._chosenFrame];
 	this.Draw();
 }
+/* *****	End Frame switching code	***** */
 
 /* *****	Blob drawing code	***** */
 RoboVis.prototype.Draw = function() {
