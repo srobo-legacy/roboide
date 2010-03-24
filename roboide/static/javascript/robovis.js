@@ -8,7 +8,16 @@ function RoboVis() {
 	//hold status message for the page
 	this._prompt = null;
 
-	//hold blob list
+	//hold the number of frames
+	this._frameCount = null;
+
+	//hold the frames
+	this._frames = null;
+
+	//hold the id of the currently selected frame
+	this._chosenFrame = null;
+
+	//hold blob list for the currently selected frame
 	this._blobs = null;
 }
 
@@ -24,8 +33,11 @@ RoboVis.prototype.init = function() {
 		connect( this.tab, "onclickclose", bind( this._close, this ) );
 		tabbar.add_tab( this.tab );
 
+		connect( 'robovis-frame-down', "onclick", bind( this.decrementFrame, this ) );
+		connect( 'robovis-frame-up', "onclick", bind( this.incrementFrame, this ) );
+
 		/* Initialise indiviual page elements */
-		this.getBlobs();
+		this.getBlobs(FRAMELIST);
 		this.Draw();
 
 		/* remember that we are initialised */
@@ -67,27 +79,64 @@ RoboVis.prototype._close = function() {
 /* *****	End Tab events	***** */
 
 
-var bloblist = [
+var FRAMELIST = {"count":3,"framelist":{1:[
  {width:40, height:30, x:27, y:60, colour: 'red'},
  {width:23, height:30, x:10, y:10, colour: 'blue'},
  {width:15, height:12, x:70, y:70, colour: 'red'}
-];
+],2:[
+ {width:6, height:40, x:27, y:60, colour: 'red'},
+ {width:19, height:23, x:10, y:10, colour: 'blue'},
+ {width:16, height:15, x:70, y:70, colour: 'red'}
+],3:[
+ {width:42, height:6, x:27, y:60, colour: 'red'},
+ {width:12, height:19, x:10, y:10, colour: 'blue'},
+ {width:27, height:16, x:70, y:70, colour: 'red'}
+]}};
 
 
 /* *****	Blob list fetching Code	***** */
-RoboVis.prototype.getBlobs = function() {
+RoboVis.prototype.getBlobs = function(nodes) {
 	log("RoboVis: Retrieving blob list");
 
-	this.blobs = bloblist;
+	this._frames = nodes.framelist;
+	this._frameCount = nodes.count;
+	this.chooseFrame(nodes.count);
+	$('robovis-frame-count').innerHTML = nodes.count;
 }
 /* *****	End Student blog feed listing code	***** */
 
+/* *****	Frame switching code	***** */
+RoboVis.prototype.incrementFrame = function() {
+	this.chooseFrame(this._chosenFrame + 1);
+}
+RoboVis.prototype.decrementFrame = function() {
+	this.chooseFrame(this._chosenFrame - 1);
+}
+RoboVis.prototype.chooseFrame = function(frame) {
+	log('RoboVis: choosing frame '+frame);
+	this._chosenFrame = Math.max(1, Math.min(this._frameCount, frame));	//limit between 1 and the number of frames
+	$('robovis-frame-choice').value = this._chosenFrame;
+	if(this._chosenFrame == 1) {
+		$('robovis-frame-down').disabled = true;
+		$('robovis-frame-up').disabled = false;
+	} else if(this._chosenFrame == this._frameCount){
+		$('robovis-frame-down').disabled = false;
+		$('robovis-frame-up').disabled = true;
+	} else {
+		$('robovis-frame-down').disabled = false;
+		$('robovis-frame-up').disabled = false;
+	}
+	this._blobs = this._frames[this._chosenFrame];
+	this.Draw();
+}
+
 /* *****	Blob drawing code	***** */
 RoboVis.prototype.Draw = function() {
+	log('RoboVis: drawing frame '+this._chosenFrame);
 	replaceChildNodes('robovis-blobs-box');
 	var scale = 1;
-	for( var i=0; i<this.blobs.length; i++) {
-		var blob = this.blobs[i];
+	for( var i=0; i<this._blobs.length; i++) {
+		var blob = this._blobs[i];
 		var l = blob.x * scale;
 		var t = blob.y * scale;
 		var h = blob.height * scale;
