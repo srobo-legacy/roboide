@@ -34,6 +34,7 @@ RoboVis.prototype.init = function() {
 		tabbar.add_tab( this.tab );
 
 		this._signals.push(connect( 'robovis-frame-down', "onclick", bind( this.decrementFrame, this ) ));
+		this._signals.push(connect( 'robovis-frame-choice', "onchange", bind( this.chooseFrame, this, -10 ) ));
 		this._signals.push(connect( 'robovis-frame-up', "onclick", bind( this.incrementFrame, this ) ));
 
 		this._signals.push(connect( 'robovis-view-blobs', "onclick", bind( this.viewBlobs, this ) ));
@@ -135,6 +136,8 @@ RoboVis.prototype.decrementFrame = function() {
 	this.chooseFrame(this._chosenFrame - 1);
 }
 RoboVis.prototype.chooseFrame = function(frame) {
+	if(frame == -10)
+		frame = $('robovis-frame-choice').value;
 	log('RoboVis: choosing frame '+frame);
 	this._chosenFrame = Math.max(1, Math.min(this._frameCount, frame));	//limit between 1 and the number of frames
 	$('robovis-frame-choice').value = this._chosenFrame;
