@@ -1,16 +1,16 @@
 #robovis-page {
-	width: 90%;
+	display: none;
 	padding-left: 5%;
 	padding-right: 5%;
-	display: none;
+	width: 90%;
 }
 
 #robovis-blobs-box {
+	height: 100px;
 	margin: 10px;
 	outline: 1px solid black;
 	position: relative;
 	width: 100px;
-	height: 100px;
 }
 #robovis-blobs-box div {
 	border: 1px solid;
