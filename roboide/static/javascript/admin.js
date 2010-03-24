@@ -20,9 +20,9 @@ Admin.prototype.init = function() {
 
 		/* Initialize a new tab for Admin - Do this only once */
 		this.tab = new Tab( "Administration" );
-		connect( this.tab, "onfocus", bind( this._onfocus, this ) );
-		connect( this.tab, "onblur", bind( this._onblur, this ) );
-		connect( this.tab, "onclickclose", bind( this._close, this ) );
+		this._signals.push(connect( this.tab, "onfocus", bind( this._onfocus, this ) ));
+		this._signals.push(connect( this.tab, "onblur", bind( this._onblur, this ) ));
+		this._signals.push(connect( this.tab, "onclickclose", bind( this._close, this ) ));
 		tabbar.add_tab( this.tab );
 
 		/* Initialise indiviual page elements */
