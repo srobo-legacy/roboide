@@ -19,9 +19,9 @@ feedparser._HTMLSanitizer.acceptable_elements.remove("a")
 
 # The maximum number of messages to display
 MAX_MESSAGES = 5
-# The maixum length of a message to display (in chars)
+# The maximum length of a message to display (in chars)
 MAX_MESSAGE_LENGTH = 100
-# The maixum length of time between feed updates (in seconds)
+# The maximum length of time between feed updates (in seconds)
 MAX_AGE = 60 * 30 #half an hour
 
 def sanitize_body(text):

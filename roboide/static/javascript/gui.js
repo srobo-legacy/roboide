@@ -109,7 +109,7 @@ function load_gui() {
 	sbutton.can_focus = false;
 	connect( sbutton, "onclick", function(){shortcuts.toggleBox();} ) ;
 	removeElementClass(sbutton._a ,"nofocus"); /* remove nofocus class */
-	addElementClass(sbutton._a ,"shortcutButton"); /* add its own class so it can be styled indivdually */
+	addElementClass(sbutton._a ,"shortcutButton"); /* add its own class so it can be styled individually */
 	tabbar.add_tab( sbutton );
 
 	// Projects tab
