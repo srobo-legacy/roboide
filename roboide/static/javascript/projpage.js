@@ -64,7 +64,8 @@ ProjPage.prototype._init = function() {
 	connect("archive-project",	'onclick', bind(this.clickArchiveProject, this));
 	connect("copy-project",		'onclick', bind(this.clickCopyProject, this));
 	connect("check-code",		'onclick', bind(this.clickCheckCode, this));
-	connect("simulate-project",	'onclick', bind(this.clickSimulateProject, this));
+//	The simulator isn't ready yet, and this fails anyway:
+//	connect("simulate-project",	'onclick', bind(this.clickSimulateProject, this));
 	connect("export-project",	'onclick', bind(this.clickExportProject, this));
 
 	// We have to synthesize the first "onchange" event from the ProjSelect,
@@ -203,6 +204,7 @@ ProjPage.prototype._createProjectFailure = function() {
 	status_msg("Create project failed - svn error", LEVEL_ERROR);
 }
 
+/*** The simulator is nowhere near ready, so hide this for the moment
 ProjPage.prototype.clickSimulateProject = function() {
 	if( $('projlist-tmpitem') != null && $('projlist-tmpitem').selected == true ) {
 		status_msg( "No project selected, please select a project", LEVEL_ERROR );
@@ -215,6 +217,7 @@ ProjPage.prototype.clickSimulateProject = function() {
 	}
 	simpage.load(this.project);
 }
+*/
 
 ProjPage.prototype.clickExportProject = function() {
 	if( $('projlist-tmpitem') != null && $('projlist-tmpitem').selected == true ) {

@@ -119,7 +119,7 @@ function load_gui() {
 	tabbar.add_tab( projtab );
 
 	// Simulator tab
-	simpage = new SimPage();
+	//simpage = new SimPage();
 
 	// Errors Tab
 	errorspage = new ErrorsPage();
