@@ -1,5 +1,4 @@
 from turbogears import controllers, expose, config
-from turbogears.feed import FeedController
 import cherrypy, model
 from sqlobject import sqlbuilder
 import logging
@@ -25,23 +24,6 @@ log = logging.getLogger("roboide.controllers")
 
 ZIPNAME = "robot.zip"
 
-class Feed(FeedController):
-    def get_feed_data(self):
-        entries = [dict(author    = {"name" : x["author"]},
-                        published = datetime.datetime.fromtimestamp(x["date"]),
-                        title     = "Revision %d" % x["revision"].number,
-                        summary   = x["message"],
-                        link      = "http://ide.studentrobotics.org/")
-                        for x in Client().log(REPO, limit=10)[0:10]]
-        return dict(
-            title = "RoboIde Data",
-            link = "http://ide.studentrobotics.org/",
-            author = {"name": "Student Robotics", "email": "info@studentrobotics.org"},
-            id = "http://ide.studentrobotics.org",
-            subtitle = "Recent commits to the repository",
-            entries = entries
-        )
-
 def get_version():
     p = subprocess.Popen( ["git", "log", "-1", "--pretty=format:\"%h on %aD\""],
                           stdout = subprocess.PIPE,
@@ -59,7 +41,6 @@ class Root(controllers.RootController):
     user = srusers.User()
     fw = fw.FwServe()
     autosave = srautosave.Autosave()
-    #feed = Feed()
     switchboard = switchboard.Switchboard()
     admin = admin.Admin()
     version = get_version()
