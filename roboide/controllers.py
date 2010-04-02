@@ -10,7 +10,6 @@ import tempfile, shutil
 import os, sys, os.path
 import zipfile
 import random
-from os.path import join
 from cherrypy.lib.cptools import serveFile
 import subprocess
 import sr
