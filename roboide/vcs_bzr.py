@@ -265,7 +265,7 @@ def open_branch(team, project):
 
     TODO: Check the logged in user has permission to do this!
     """
-    repoLoc = srusers.get_svnrepo( team )
+    repoLoc = srusers.get_repopath( team )
     branchloc = repoLoc + "/" + project
     return bzrlib.branch.Branch.open(branchloc)
 
@@ -275,7 +275,7 @@ def open_repo(team):
 
     TODO: Check the logged in user has permission to do this.
     """
-    repoLoc = srusers.get_svnrepo( team )
+    repoLoc = srusers.get_repopath( team )
     return bzrlib.repository.Repository.open(repoLoc)
 
 class WorkingTree:
@@ -286,7 +286,7 @@ class WorkingTree:
     def __init__(self, team, project):
 
         # First open the branch
-        repo = srusers.get_svnrepo( team ) # TODO BZRPORT: do we want Repo to be a string?
+        repo = srusers.get_repopath( team ) # TODO BZRPORT: do we want Repo to be a string?
         branchloc = repo + "/" + project
         b = bzrlib.branch.Branch.open(branchloc)
 

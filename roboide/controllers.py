@@ -615,7 +615,7 @@ class Root(controllers.RootController):
             """No ../../ nastyness"""
             return nil
 
-        url = srusers.get_svnrepo( team ) + "/" + name
+        url = srusers.get_repopath( team ) + "/" + name
 
         r.bzrdir.create_branch_convenience(base=url,force_new_tree=False)
 

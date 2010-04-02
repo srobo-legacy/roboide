@@ -166,7 +166,7 @@ def getteams():
 
     return [int(group[4:]) for group in groups if group[:4] == "team"]
 
-def get_svnrepo( team ):
+def get_repopath( team ):
     """Return the subversion repository URL for the current user and given team.
     Given team must be an integer."""
     return config.get( "svn.repos" ).replace( "TEAM", str(team) )
