@@ -99,23 +99,23 @@ Log.prototype._populateList = function() {
 
 	//fill drop down box with authors attributed to file(s)
 	//clear list:
-	replaceChildNodes($("svn-users"), opt);
+	replaceChildNodes('repo-users', opt);
 
 	//first item in list is: 'Filter by user'
 	var opt = OPTION({"value":-1}, "Filter by user");
-	appendChildNodes($("svn-users"), opt);
+	appendChildNodes('repo-users', opt);
 
 	//second item in the list is: 'all' meaning, show logs from all users
 	var opt = OPTION({"value":-1}, "Show all");
-	appendChildNodes($("svn-users"), opt);
+	appendChildNodes('repo-users', opt);
 
 	//now add all attributed authors
 	for(var i=0; i < this.userList.length; i++) {
 		var opt = OPTION({"value":i}, this.userList[i]);
-		appendChildNodes($("svn-users"), opt);
+		appendChildNodes('repo-users', opt);
 	}
     //remove event handler for when user applies filter to results
-	disconnectAll($("svn-users"));
+	disconnectAll('repo-users');
 
 
 	//clear log list
@@ -130,11 +130,11 @@ Log.prototype._populateList = function() {
 	}
 	//make selected user selected in drop down box (visual clue that filter is applied)
 	if(this.user != null) {
-		$("svn-users").value = findValue(this.userList, this.user);
+		$('repo-users').value = findValue(this.userList, this.user);
 	}
 
 	//connect event handler for when user applies filter to results
-	connect($("svn-users"), 'onchange', bind(this._update, this));
+	connect('repo-users', 'onchange', bind(this._update, this));
 
 	//disconnect the older/newer buttons
 	disconnectAll($("older"));
@@ -171,7 +171,7 @@ Log.prototype._nextview = function(updown) {
 //called when user applies author filter
 Log.prototype._update = function() {
 	//find out which author was selected  using select value as key to userList array
-	var index = $("svn-users").value;
+	var index = $('repo-users').value;
 	//if user clicks 'All' (-1) clear user variable
 	if(index > -1) {
 		this.user = this.userList[index];

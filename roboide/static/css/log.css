@@ -13,7 +13,7 @@
 #logmenu li.log-user, #logmenu li.log-navigate {
 	float: right;
 }
-#logmenu li.log-user #svn-users {
+#logmenu li.log-user #repo-users {
 	margin-left: 1em;
 	margin-right: 1.5em;
 }
