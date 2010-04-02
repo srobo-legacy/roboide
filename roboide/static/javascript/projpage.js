@@ -201,7 +201,7 @@ ProjPage.prototype._createProjectSuccess = function(newProjName) {
 
 ProjPage.prototype._createProjectFailure = function() {
 	/* XXX - check for preexisting projects perhaps */
-	status_msg("Create project failed - svn error", LEVEL_ERROR);
+	status_msg('Create project failed', LEVEL_ERROR);
 }
 
 /*** The simulator is nowhere near ready, so hide this for the moment
