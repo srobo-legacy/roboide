@@ -205,9 +205,9 @@ function EditTab(iea, team, project, path, rev, mode) {
 	//  - _save: Handler for when the save button is clicked.
 	//  - _receive_new_fname: Handler for save dialog.
 	//  - _receive_commit_msg: Handler for save dialog.
-	//  - _svn_save: Save the file to the server.
-	//  - _receive_svn_save: Handler for successfully sending to server.
-	//  - _error_receive_svn_save: Handler for when a save fails.
+	//  - _repo_save: Save the file to the server.
+	//  - _receive_repo_save: Handler for successfully sending to server.
+	//  - _error_receive_repo_save: Handler for when a save fails.
 
 	//  ** Tab related **
 	//  - _close: Actually close the tab.
@@ -253,7 +253,7 @@ function EditTab(iea, team, project, path, rev, mode) {
 	this._autosave_retry_delay = 7;
 	//the contents at the time of the last autosave
 	this._autosaved = "";
-	// whether we're loading from the svn or an autosave
+	// whether we're loading from the vcs repo or an autosave
 	this._mode = mode;
 	//the cursor selection
 	this._selection_start = 0;
@@ -346,14 +346,14 @@ function EditTab(iea, team, project, path, rev, mode) {
 			this.project = a[1];
 			this.path = fpath;
 			this._commitMsg = commitMsg;
-			this._svn_save();
+			this._repo_save();
 		} else
 			status_msg( "No project specified", LEVEL_ERROR );
 	}
 
 	this._receive_commit_msg = function(commitMsg) {
 		this._commitMsg = commitMsg;
-		this._svn_save();
+		this._repo_save();
 	}
 
 	this._save = function() {
@@ -376,7 +376,7 @@ function EditTab(iea, team, project, path, rev, mode) {
 	}
 
 	//ajax event handler for saving to server
-	this._receive_svn_save = function(nodes){
+	this._receive_repo_save = function(nodes){
 		projpage.flist.refresh();
 
 		switch(nodes.success){
@@ -421,12 +421,12 @@ function EditTab(iea, team, project, path, rev, mode) {
 	}
 
 	//ajax event handler for saving to server
-	this._error_receive_svn_save = function() {
-		status_button("Error contacting server", LEVEL_ERROR, "retry", bind(this._svn_save, this));
+	this._error_receive_repo_save = function() {
+		status_button("Error contacting server", LEVEL_ERROR, "retry", bind(this._repo_save, this));
 	}
 
 	//save file contents to server as new revision
-	this._svn_save = function() {
+	this._repo_save = function() {
 		var d = postJSONDoc("./savefile", {
 					queryString : { team : team,
 						filepath : this.path,
@@ -435,8 +435,8 @@ function EditTab(iea, team, project, path, rev, mode) {
 					sendContent : {code : this.contents}
 				});
 
-		d.addCallback( bind(this._receive_svn_save, this));
-		d.addErrback( bind(this._error_receive_svn_save, this));
+		d.addCallback( bind(this._receive_repo_save, this));
+		d.addErrback( bind(this._error_receive_repo_save, this));
 	}
 
 	this._on_keydown = function(ev) {

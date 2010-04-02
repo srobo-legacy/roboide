@@ -381,7 +381,7 @@ function ErrorFile(name) {
 	}
 
 	this._view_onclick = function() {
-		editpage.edit_file( team, projpage.project, this.label, 'HEAD', 'SVN' );
+		editpage.edit_file( team, projpage.project, this.label, 'HEAD', 'REPO' );
 	}
 
 	this._expand_onclick = function() {

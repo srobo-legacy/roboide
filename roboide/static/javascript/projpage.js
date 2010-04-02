@@ -506,7 +506,7 @@ ProjFileList.prototype._onclick = function(ev) {
 			editpage.edit_file( this._team, this._project, path, this.rev, 'AUTOSAVE' );
 			//do something special
 		} else {
-			editpage.edit_file( this._team, this._project, path, this.rev, 'SVN' );
+			editpage.edit_file( this._team, this._project, path, this.rev, 'REPO' );
 		}
 	}
 }
