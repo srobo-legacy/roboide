@@ -22,7 +22,7 @@ function Browser(cback, options) {
 	//  - _getFileTree: Grab file tree from server
 	//  - _processTree: Recursive function to turn filelist into DOM
 
-	this.newDirectory = "";
+	this.newDirectory = '/';
 	this.newFname = "";
 	this.commitMsg = "";
 
