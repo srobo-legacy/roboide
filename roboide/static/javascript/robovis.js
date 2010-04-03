@@ -84,7 +84,8 @@ RoboVis.prototype._close = function() {
 /* *****	End Tab events	***** */
 
 
-var FRAMELIST = {"count":3,"framelist":{1:[
+var FRAMELIST = {"framelist":{0:[
+],1:[
  {width:40, height:30, x:27, y:60, colour: 'red'},
  {width:23, height:30, x:10, y:10, colour: 'blue'},
  {width:15, height:12, x:70, y:70, colour: 'red'}
@@ -96,7 +97,7 @@ var FRAMELIST = {"count":3,"framelist":{1:[
  {width:42, height:6, x:27, y:60, colour: 'red'},
  {width:12, height:19, x:10, y:10, colour: 'blue'},
  {width:27, height:16, x:70, y:70, colour: 'red'}
-]}};
+]},"count":3};
 
 
 /* *****	Blob list fetching Code	***** */
