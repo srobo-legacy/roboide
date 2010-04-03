@@ -249,13 +249,14 @@ Browser.prototype._processTree = function(parentDOM, tree, pathSoFar) {
 	return parentDOM;
 }
 
-Browser.prototype.rootSelected = function(e) {
-	//only fire if a signal or a cliack actually on the div (ie no bubbling)
-	if(e._event == undefined || e._event.originalTarget == $('left-pane'))
-		this.dirSelected('/', this.fileTree);
+Browser.prototype.rootSelected = function() {
+	log('Browser: root folder selected');
+	this.dirSelected('/', this.fileTree);
 }
 
-Browser.prototype.dirSelected = function(directory, thingsInside) {
+Browser.prototype.dirSelected = function(directory, thingsInside, ev) {
+	if(ev != undefined)
+		ev.stop();
 	logDebug("Folder selected :"+directory);
 	//update selected directory
 	this.newDirectory = directory;
