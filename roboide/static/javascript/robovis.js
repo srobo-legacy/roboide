@@ -44,6 +44,9 @@ RoboVis.prototype.init = function() {
 		/* Initialise indiviual page elements */
 		this.getBlobs(FRAMELIST);
 		this.Draw();
+		//choose blobs mode:
+		$('robovis-view-blobs').checked = true;
+		signal('robovis-view-blobs', 'onclick');
 
 		/* remember that we are initialised */
 		this._inited = true;
