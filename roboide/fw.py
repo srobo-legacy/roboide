@@ -25,11 +25,15 @@ class FwServe(object):
         if len(rev) < len("svn:0"):
             return False
 
-        if rev[0:4] != "svn:":
+        if rev[0:4] not in ['svn:', 'git:']:
             return False
 
-        # Check the revision number is all numbers
-        if False in [x.isdigit() for x in rev[4:]]:
+        # Check the SVN revision number is all numbers
+        if rev[0:4] == 'svn:' and False in [x.isdigit() for x in rev[4:]]:
+            return False
+
+        # Check the GIT revision number is hex only
+        if rev[0:4] == 'git:' and False in [x in '0123456798abcdef' for x in rev[4:]]:
             return False
 
         return True

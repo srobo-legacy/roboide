@@ -69,6 +69,7 @@ class FirmwareBlobs(SQLObject):
     # The revision number in VC that the firmware is built from.
     # Current supported formats:
     #  - "svn:REV" where REV is the subversion commit number.
+    #  - "git:SHA" where SHA is the git commit hash.
     revision = StringCol()
 
     # A description of the firmware.  Could contain a changelog.
