@@ -240,6 +240,10 @@ class FwServe(object):
         elif state != 'DEVEL':
             return {"ERROR": "Cannot resubmit for testing"}
 
+        for f in model.FirmwareBlobs.selectBy( device = dev_id ):
+            if self.__get_state(f.id) == 'TESTING':
+                return {"ERROR": "Cannot submit more than one firmware for testing for device '%s'" % device}
+
         self.__add_state( fw.id, "Submitted for Testing", "TESTING")
 
         return { "success": True }
