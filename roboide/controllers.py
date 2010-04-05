@@ -3,7 +3,6 @@ import cherrypy, model
 from sqlobject import sqlbuilder
 import logging
 import bzrlib.errors, bzrlib.tree, bzrlib.revisionspec
-import pysvn    # TODO BZRPORT: remove once all pysvn code removed
 import time, datetime, StringIO
 import re
 import tempfile, shutil
@@ -294,52 +293,6 @@ class Root(controllers.RootController):
                                 "message" : r.message,
                                 "rev" : b.revision_id_to_revno(r.revision_id)}
                               for r in revisions])
-
-    @expose("json")
-    @srusers.require(srusers.in_team())
-    def polldata(self, team, files = "",logrev=None):
-        """Returns poll data:
-            inputs: files - comma seperated list of files the client needs info
-            on
-            returns (json): A dictionary with an entry for each file (path is
-            the key). Each value is a dictionary with information. The only key
-            is revision, with a value of an integer of the current revision
-            number in the repo"""
-        pass    #TODO BZRPORT: Implement!
-
-        #Default data
-        r = {}
-        l = {}
-        client = Client(int(team))
-
-        if files != "":
-            files = files.split(",")
-            rev = 0
-            for file in files:
-                r[file] = {}
-                try:
-                    info = client.info2( client.REPO + file )[0][1]
-                    r[file]["rev"] = info["last_changed_rev"].number
-                except pysvn.ClientError:
-                    pass
-
-        if logrev != None:
-            try:
-                newlogs = client.log(client.REPO, discover_changed_paths=True,
-                    revision_end=pysvn.Revision(pysvn.opt_revision_kind.number,
-                        int(logrev)+1))
-
-                l =[{"author":x["author"], \
-                        "date":time.strftime("%H:%M:%S %d/%m/%Y", \
-                        time.localtime(x["date"])), \
-                        "message":x["message"], "rev":x["revision"].number,
-                        "changed_paths":[(c.action, c.path) for c in \
-                            x.changed_paths]} for x in newlogs]
-            except pysvn.ClientError:
-                #No commits recently, no data to return
-                pass
-
-        return dict(files=r, log=l)
 
     @expose("json")
     @srusers.require(srusers.in_team())
