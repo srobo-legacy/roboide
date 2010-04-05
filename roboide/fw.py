@@ -219,4 +219,27 @@ class FwServe(object):
         """ """
         return "Firmware signing not yet implemented!"
 
+    @expose("json")
+    def submit(self,device,version):
+        """Submit an image for testing"""
+        version = int(version)
+        dev_id = self.__find_device(device)
+        if not dev_id:
+            return {"ERROR": "Device '%s' not found" % device}
 
+        r = model.FirmwareBlobs.selectBy( device = dev_id, version = version )
+        if r.count() == 0:
+            return {"ERROR": "Version '%i' does not exist" % version}
+        fw = r[0]
+
+        state = self.__get_state(fw.id)
+        if state == 'ALLOCATED':
+            return {"ERROR": "Cannot submit for testing without firmware image"}
+        elif state == 'TESTING':
+            return {"ERROR": "This firmware already under testing!"}
+        elif state != 'DEVEL':
+            return {"ERROR": "Cannot resubmit for testing"}
+
+        self.__add_state( fw.id, "Submitted for Testing", "TESTING")
+
+        return { "success": True }
