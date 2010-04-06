@@ -93,6 +93,20 @@ class FirmwareState(SQLObject):
                                     "FAILED",
                                     "OLD_RELEASE",
                                     "SUPERCEDED" ] )
+
+class FirmwareTesting(SQLObject):
+    # The firmware this relates to. (ForeignKey doesn't work in the sqlobject on button)
+    fw_id = IntCol() #ForeignKey("FirmwareBlobs")
+
+    # The date and time of the test result
+    date = DateTimeCol()
+
+    # An message to go with the test result
+    message = StringCol()
+
+    # The result of the firmware test
+    result = BoolCol()
+
 class UserBlogFeeds(SQLObject):
 	#the user id
 	user = StringCol()

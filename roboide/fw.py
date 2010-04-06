@@ -6,6 +6,8 @@ import sha, datetime, time
 import os.path
 from cherrypy.lib.cptools import serveFile
 
+TEST_PASSES_TO_SHIP = 4
+
 def datetime_to_stamp(d):
     return int( time.mktime( d.timetuple() ) )
 
@@ -251,3 +253,50 @@ class FwServe(object):
         self.__add_state( fw.id, "Submitted for Testing", "TESTING")
 
         return { "success": True }
+
+    @expose("json")
+    def submitresult(self,device,version,result,message=''):
+        """Submit an image for testing"""
+        version = int(version)
+        dev_id = self.__find_device(device)
+        if not dev_id:
+            return {"ERROR": "Device '%s' not found" % device}
+
+        r = model.FirmwareBlobs.selectBy( device = dev_id, version = version )
+        if r.count() == 0:
+            return {"ERROR": "Version '%i' does not exist" % version}
+        fw = r[0]
+
+        state = self.__get_state(fw.id)
+        if state != 'TESTING':
+            return {"ERROR": "Cannot submit result for firmware not currently under test"}
+
+        if result not in ['pass','fail']:
+            return {"ERROR": "Result must be one of 'pass' or 'fail'"}
+
+        #submit the result
+        model.FirmwareTesting( fw_id = fw.id,
+                               date = datetime.datetime.now(),
+                               message = message,
+                               result = result )
+
+        if result == 'fail':
+            self.__add_state( fw.id, "Test Failure", "FAILED")
+            tests_remaining = -1
+
+        else:
+            tests_passed = model.FirmwareTesting.selectBy( fw_id = fw.id, result = 'pass' ).count()
+            tests_remaining = TEST_PASSES_TO_SHIP - tests_passed
+
+            if tests_remaining == 0:
+                r = model.FirmwareBlobs.selectBy( device = dev_id, state = 'SHIPPING' )
+                if r.count() != 0:
+                    currently_shipping = r[0]
+                    self.__add_state( currently_shipping.id, "Replaced by version %i" % version, "OLD_RELEASE")
+
+                self.__add_state( fw.id, "%i tests passed -- start shipping" % TEST_PASSES_TO_SHIP, "SHIPPING")
+
+            else:
+                self.__add_state( fw.id, "%i tests passed (%i needed)" % (tests_passed,TEST_PASSES_TO_SHIP), "TESTING")
+
+        return { "success": True, "remaining": tests_remaining }
