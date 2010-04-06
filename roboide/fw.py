@@ -291,10 +291,10 @@ class FwServe(object):
             tests_remaining = TEST_PASSES_TO_SHIP - tests_passed
 
             if tests_remaining == 0:
-                r = model.FirmwareBlobs.selectBy( device = dev_id, state = 'SHIPPING' )
-                if r.count() != 0:
-                    currently_shipping = r[0]
-                    self.__add_state( currently_shipping.id, "Replaced by version %i" % version, "OLD_RELEASE")
+                for f in model.FirmwareBlobs.selectBy( device = dev_id ):
+                    if self.__get_state(f.id) == 'SHIPPING':
+                        self.__add_state( f.id, "Replaced by version %i" % version, "OLD_RELEASE")
+                        break
 
                 self.__add_state( fw.id, "%i tests passed -- start shipping" % TEST_PASSES_TO_SHIP, "SHIPPING")
 
