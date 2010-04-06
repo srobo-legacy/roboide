@@ -250,6 +250,10 @@ class FwServe(object):
             if self.__get_state(f.id) == 'TESTING':
                 return {"ERROR": "Cannot submit more than one firmware for testing for device '%s'" % device}
 
+        for f in model.FirmwareBlobs.selectBy( device = dev_id ):
+            if f.version < version and self.__get_state(f.id) in ['ALLOCATED','DEVEL']:
+                self.__add_state( f.id, "Superceded by version %i" % version, "SUPERCEDED")
+
         self.__add_state( fw.id, "Submitted for Testing", "TESTING")
 
         return { "success": True }
