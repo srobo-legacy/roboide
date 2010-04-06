@@ -274,18 +274,20 @@ class FwServe(object):
         if result not in ['pass','fail']:
             return {"ERROR": "Result must be one of 'pass' or 'fail'"}
 
+        #convert to boolean
+        result = (result == 'pass')
         #submit the result
         model.FirmwareTesting( fw_id = fw.id,
                                date = datetime.datetime.now(),
                                message = message,
                                result = result )
 
-        if result == 'fail':
+        if not result:
             self.__add_state( fw.id, "Test Failure", "FAILED")
             tests_remaining = -1
 
         else:
-            tests_passed = model.FirmwareTesting.selectBy( fw_id = fw.id, result = 'pass' ).count()
+            tests_passed = model.FirmwareTesting.selectBy( fw_id = fw.id, result = True ).count()
             tests_remaining = TEST_PASSES_TO_SHIP - tests_passed
 
             if tests_remaining == 0:
