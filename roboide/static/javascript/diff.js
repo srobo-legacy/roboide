@@ -64,7 +64,28 @@ DiffPage.prototype._close = function() {
 
 /* *****	Team editing Code	***** */
 DiffPage.prototype._recieveDiff = function(nodes) {
-	$('diff-page-diff').innerHTML = nodes.diff;
+	replaceChildNodes('diff-page-diff');
+	var difflines = nodes.diff.replace('\r','').split('\n');
+	var modeclasses = {
+		' ' : '',
+		'+' : 'add',
+		'-' : 'remove',
+		'=' : '',
+		'@' : 'at'
+	};
+	var mode = '';
+	var group = '';
+	for( var i=0; i < difflines.length; i++) {
+		line = difflines[i];
+		logDebug(line[0]);
+		if(line[0] == mode) {
+			group += line+'\n';
+		} else {
+			appendChildNodes('diff-page-diff', DIV({'class': modeclasses[mode]}, group));
+			mode = line[0];
+			group = line+'\n';
+		}
+	}
 	this.init();
 }
 
