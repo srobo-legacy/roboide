@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="./static/css/menubar.css" type="text/css"/>
         <link rel="stylesheet" href="./static/css/switchboard.css" type="text/css"/>
         <link rel="stylesheet" href="./static/css/admin.css" type="text/css"/>
+        <link rel="stylesheet" href="./static/css/diff.css" type="text/css"/>
         <!-- Javascript Source Files -->
         <script src="./static/javascript/MochiKit.js" type="text/javascript"></script>
         <script src="./static/javascript/gui.js" type="text/javascript"></script>
@@ -26,6 +27,7 @@
         <script src="./static/javascript/robolog.js" type="text/javascript"></script>
         <script src="./static/javascript/switchboard.js" type="text/javascript"></script>
         <script src="./static/javascript/admin.js" type="text/javascript"></script>
+        <script src="./static/javascript/diff.js" type="text/javascript"></script>
         <script src="static/javascript/edit_area/edit_area_loader.js" type="text/javascript"></script><!-- editarea can die in ie6 if there is a leading ./ on the src line -->
         <title>Robotics IDE</title>
     </head>
@@ -293,6 +295,10 @@
         <div id="simulator-page">
             <div id="graphics"></div>
         </div> <!--end "simulator-page" -->
+
+	<div id="diff-page">
+		<pre id="diff-page-diff"></pre>
+	</div> <!--end "diff-page" -->
 
         </div> <!-- end of "page" div -->
 

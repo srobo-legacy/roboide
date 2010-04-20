@@ -45,6 +45,9 @@ var switchboardpage = null;
 // The Admin page
 var adminpage = null;
 
+// The Diff page
+var diffpage = null;
+
 // The about box
 var about = null;
 
@@ -120,6 +123,9 @@ function load_gui() {
 
 	// Simulator tab
 	//simpage = new SimPage();
+
+	// Diff Page
+	diffpage = new DiffPage();
 
 	// Errors Tab
 	errorspage = new ErrorsPage();

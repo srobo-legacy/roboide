@@ -1,0 +1,10 @@
+#diff-page {
+	display: none;
+}
+
+#diff-page-diff .add {
+	color: green;
+}
+#diff-page-diff .remove {
+	color: red;
+}

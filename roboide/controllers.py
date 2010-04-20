@@ -296,6 +296,33 @@ class Root(controllers.RootController):
 
     @expose("json")
     @srusers.require(srusers.in_team())
+    def diff(self, team, file, rev=0):
+        """
+        This function returns the patch applied by a particular revision to a file.
+        """
+        if file[:9] == 'New File ':
+            return dict(path=file, history=[])
+
+        project,file = self.get_project_path(file)
+        b = open_branch(int(team), project)
+        rev_id = b.revision_history()[0]
+        rev = b.repository.get_revision(rev_id)
+
+        from cStringIO import StringIO
+        from bzrlib import diff
+
+        if len(rev.parent_ids) == 0:
+            ancestor_id = bzrlib.revision.NULL_REVISION
+        else:
+            ancestor_id = rev.parent_ids[0]
+        tree_1 = b.repository.revision_tree(ancestor_id)
+        tree_2 = b.repository.revision_tree(rev_id)
+        s = StringIO()
+        diff.show_diff_trees(tree_1, tree_2, s, old_label='', new_label='')
+        return dict( diff = s.getvalue() )
+
+    @expose("json")
+    @srusers.require(srusers.in_team())
     def pollchanges(self, team, project, rev, date=0):
         """
         Used to determine if certain facets need updating.
