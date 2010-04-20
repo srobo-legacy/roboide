@@ -209,14 +209,7 @@ Log.prototype._do_revert = function(commitMsg) {
 
 //revert to selected revision. override = true to skip user confirmation
 Log.prototype._revert = function(override) {
-	//find out which radio button is checked
-	var radios = getElementsByTagAndClassName("input", "log-radio");
-	for(var x=0; x < radios.length; x++) {
-		if(radios[x].checked == true) {
-			this.selectedRevision = radios[x].value;
-			break;
-		}
-	}
+	this._find_selected();
 
 	if(this.selectedRevision < 0) {
 		//no revision selected
@@ -230,6 +223,17 @@ Log.prototype._revert = function(override) {
 		status_button("Are you sure you want to revert selected file(s)?", LEVEL_WARN, "Yes", bind(this._revert, this, true));
 	}
 
+}
+
+//find out which radio button is checked
+Log.prototype._find_selected = function() {
+	var radios = getElementsByTagAndClassName("input", "log-radio");
+	for(var x=0; x < radios.length; x++) {
+		if(radios[x].checked == true) {
+			this.selectedRevision = radios[x].value;
+			break;
+		}
+	}
 }
 
 //tab gets focus
