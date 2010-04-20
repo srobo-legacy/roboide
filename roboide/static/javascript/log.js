@@ -158,6 +158,10 @@ Log.prototype._populateList = function() {
 	disconnectAll($("revert"));
 	connect($("revert"), 'onclick', bind(this._revert, this, false));
 
+	//connect up the 'Diff' button to event handler
+	disconnectAll('log-diff');
+	connect('log-diff', 'onclick', bind(this._diff, this, false));
+
 	//connect up the close button on log menu
 	disconnectAll($("log-close"));
 	connect($("log-close"), 'onclick', bind(this.close, this));
@@ -233,6 +237,18 @@ Log.prototype._find_selected = function() {
 			this.selectedRevision = radios[x].value;
 			break;
 		}
+	}
+}
+
+//view the diff applied by a selected revision.
+Log.prototype._diff = function() {
+	this._find_selected();
+
+	if(this.selectedRevision < 0) {
+		//no revision selected
+		status_msg("No revision selected !", LEVEL_WARN);
+	} else {
+		diffpage.diff(this.file, this.selectedRevision);
 	}
 }
 
