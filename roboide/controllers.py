@@ -296,7 +296,7 @@ class Root(controllers.RootController):
 
     @expose("json")
     @srusers.require(srusers.in_team())
-    def diff(self, team, file, rev=0):
+    def diff(self, team, file, rev):
         """
         This function returns the patch applied by a particular revision to a file.
         """
@@ -305,7 +305,7 @@ class Root(controllers.RootController):
 
         project,file = self.get_project_path(file)
         b = open_branch(int(team), project)
-        rev_id = b.revision_history()[0]
+        rev_id = b.revision_history()[int(rev)-1]
         rev = b.repository.get_revision(rev_id)
 
         from cStringIO import StringIO
