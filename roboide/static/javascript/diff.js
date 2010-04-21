@@ -10,6 +10,12 @@ function DiffPage() {
 
 	//store inited state
 	this._inited = false;
+
+	//store file path
+	this.file = '';
+
+	//store newer file revision
+	this.newrev = -1;
 }
 
 /* *****	Initialization code	***** */
@@ -86,6 +92,9 @@ DiffPage.prototype._recieveDiff = function(nodes) {
 			group = line+'\n';
 		}
 	}
+	var newrev = this.newrev == -2 ? 'your modifications' : 'r'+this.newrev;
+	$('diff-page-summary').innerHTML = 'Displaying differences on '
+			+this.file+' between r'+nodes.oldrev+' and '+newrev+'.';
 	this.init();
 }
 
@@ -94,12 +103,14 @@ DiffPage.prototype._errDiff = function(nodes) {
 }
 
 DiffPage.prototype.diff = function(file, rev, code) {
+	this.file = file;
 	if( code == undefined ) {
 		var d = loadJSONDoc("./diff", {
 					team: team,
 					file: file,
 					rev: rev
 				});
+		this.newrev = rev;
 	} else {
 		var d = postJSONDoc("./diff", {
 			queryString: {
@@ -109,6 +120,7 @@ DiffPage.prototype.diff = function(file, rev, code) {
 				},
 			sendContent: { code: code }
 		});
+		this.newrev = -2;
 	}
 
 	d.addCallback( bind( this._recieveDiff, this) );

@@ -1,6 +1,9 @@
 #diff-page {
 	display: none;
 }
+#diff-page .menu-bar {
+	padding-left: 10px;
+}
 
 #diff-page-diff {
 	margin: 12px;

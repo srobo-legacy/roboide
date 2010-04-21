@@ -304,10 +304,10 @@ class Root(controllers.RootController):
             return dict(path=file, history=[])
 
         project,file = self.get_project_path(file)
+        b = open_branch(int(team), project)
 
         if code == None:
             #the patch from a commit
-            b = open_branch(int(team), project)
             rev_id = b.revision_history()[int(rev)-1]
             rev = b.repository.get_revision(rev_id)
 
@@ -327,6 +327,7 @@ class Root(controllers.RootController):
         else:
             #the current difference
             path,file_name = os.path.split(file)
+            ancestor_id = b.last_revision()
 
             # Check out the code
             wt = WorkingTree(int(team), project)
@@ -355,7 +356,7 @@ class Root(controllers.RootController):
             else:
                 filediff = output[0]
 
-        return dict( diff = filediff )
+        return dict( diff = filediff, oldrev = b.revision_id_to_revno(ancestor_id) )
 
     @expose("json")
     @srusers.require(srusers.in_team())
