@@ -72,7 +72,7 @@ class Root(controllers.RootController):
         returns:
             tuple containing the project and path
         """
-        root,project,file_path = path.split(os.path.sep,2)
+        root,project,file_path = path.split('/',2)
         return project,file_path
 
     def get_rev_id(self, team, project, revno=-1):
