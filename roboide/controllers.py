@@ -296,7 +296,7 @@ class Root(controllers.RootController):
 
     @expose("json")
     @srusers.require(srusers.in_team())
-    def diff(self, team, file, rev):
+    def diff(self, team, file, rev, code=None):
         """
         This function returns the patch applied by a particular revision to a file.
         """
@@ -304,22 +304,58 @@ class Root(controllers.RootController):
             return dict(path=file, history=[])
 
         project,file = self.get_project_path(file)
-        b = open_branch(int(team), project)
-        rev_id = b.revision_history()[int(rev)-1]
-        rev = b.repository.get_revision(rev_id)
 
-        from cStringIO import StringIO
-        from bzrlib import diff
+        if code == None:
+            #the patch from a commit
+            b = open_branch(int(team), project)
+            rev_id = b.revision_history()[int(rev)-1]
+            rev = b.repository.get_revision(rev_id)
 
-        if len(rev.parent_ids) == 0:
-            ancestor_id = bzrlib.revision.NULL_REVISION
+            from cStringIO import StringIO
+            from bzrlib import diff
+
+            if len(rev.parent_ids) == 0:
+                ancestor_id = bzrlib.revision.NULL_REVISION
+            else:
+                ancestor_id = rev.parent_ids[0]
+            tree_1 = b.repository.revision_tree(ancestor_id)
+            tree_2 = b.repository.revision_tree(rev_id)
+            s = StringIO()
+            diff.show_diff_trees(tree_1, tree_2, s, old_label='', new_label='')
+            filediff = s.getvalue()
+
         else:
-            ancestor_id = rev.parent_ids[0]
-        tree_1 = b.repository.revision_tree(ancestor_id)
-        tree_2 = b.repository.revision_tree(rev_id)
-        s = StringIO()
-        diff.show_diff_trees(tree_1, tree_2, s, old_label='', new_label='')
-        return dict( diff = s.getvalue() )
+            #the current difference
+            path,file_name = os.path.split(file)
+
+            # Check out the code
+            wt = WorkingTree(int(team), project)
+            # Directory we're working in
+            td = wt.tmpdir
+
+            print td+os.path.sep+file
+            tmpfile = open(td+os.path.sep+file, 'w')
+            tmpfile.write(str(code))
+            tmpfile.close()
+
+            print 'temp_dir: '+td+"\nfile: "+file
+
+            # Run pychecker
+            p = subprocess.Popen( ['bzr', 'diff' ],
+                                  cwd = td,
+                                  stdout = subprocess.PIPE,
+                                  stderr = subprocess.PIPE )
+            output = p.communicate()
+
+            rval = p.wait()
+            wt.destroy()
+
+            if rval == 0:
+                return dict( )
+            else:
+                filediff = output[0]
+
+        return dict( diff = filediff )
 
     @expose("json")
     @srusers.require(srusers.in_team())

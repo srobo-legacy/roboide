@@ -93,12 +93,23 @@ DiffPage.prototype._errDiff = function(nodes) {
 	return;
 }
 
-DiffPage.prototype.diff = function(file, rev) {
-	var d = loadJSONDoc("./diff", {
-				team: team,
-				file: file,
-				rev: rev
-			});
+DiffPage.prototype.diff = function(file, rev, code) {
+	if( code == undefined ) {
+		var d = loadJSONDoc("./diff", {
+					team: team,
+					file: file,
+					rev: rev
+				});
+	} else {
+		var d = postJSONDoc("./diff", {
+			queryString: {
+					team: team,
+					file: file,
+					rev: rev
+				},
+			sendContent: { code: code }
+		});
+	}
 
 	d.addCallback( bind( this._recieveDiff, this) );
 	d.addErrback( bind( this._errDiff, this) );
