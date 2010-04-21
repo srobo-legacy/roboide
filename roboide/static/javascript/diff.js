@@ -97,7 +97,8 @@ DiffPage.prototype._recieveDiff = function(nodes) {
 	this.init();
 }
 
-DiffPage.prototype._errDiff = function(nodes) {
+DiffPage.prototype._errDiff = function(rev, code, nodes) {
+	status_button("Error retrieving diff", LEVEL_WARN, "Retry", bind(this.diff, this, this.file, rev, code));
 	return;
 }
 
@@ -123,6 +124,6 @@ DiffPage.prototype.diff = function(file, rev, code) {
 	}
 
 	d.addCallback( bind( this._recieveDiff, this) );
-	d.addErrback( bind( this._errDiff, this) );
+	d.addErrback( bind( this._errDiff, this, rev, code) );
 }
 /* *****	End Diff loading Code 	***** */
