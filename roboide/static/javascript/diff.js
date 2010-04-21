@@ -83,7 +83,6 @@ DiffPage.prototype._recieveDiff = function(nodes) {
 	var group = '';
 	for( var i=0; i < difflines.length; i++) {
 		line = difflines[i];
-		logDebug(line[0]);
 		if(line[0] == mode) {
 			group += line+'\n';
 		} else {
