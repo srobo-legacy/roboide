@@ -338,6 +338,19 @@ function EditTab(iea, team, project, path, rev, mode) {
 		errorspage.check(this.path, opts);
 	}
 
+	this._diff = function() {
+		//tell the log and grab the latest contents
+		log( "Showing diff of " + this.path );
+		this._capture_code();
+
+		//throw the contents to the diff page, if changed
+		if(this._original != this.contents)
+			diffpage.diff(this.path, this.rev, this.contents);
+		else
+			status_msg("File not modified!", LEVEL_WARN);
+
+	}
+
 	this._receive_new_fname = function(fpath, commitMsg) {
 		var a = fpath.split( "/", 2 );
 
@@ -552,6 +565,10 @@ function EditTab(iea, team, project, path, rev, mode) {
 					     "onclick",
 					     bind( this._check_syntax, this ) ) );
 		}
+		// Diff view handler
+		this._signals.push( connect( $("edit-diff"),
+					     "onclick",
+					     bind( this._diff, this ) ) );
 		// Save handler
 		this._signals.push( connect( $("save-file"),
 					     "onclick",
