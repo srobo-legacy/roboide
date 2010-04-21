@@ -73,7 +73,7 @@ DiffPage.prototype._recieveDiff = function(nodes) {
 		'=' : '',
 		'@' : 'at'
 	};
-	var mode = '';
+	var mode = '=';
 	var group = '';
 	for( var i=0; i < difflines.length; i++) {
 		line = difflines[i];
