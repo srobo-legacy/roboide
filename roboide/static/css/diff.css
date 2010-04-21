@@ -2,6 +2,9 @@
 	display: none;
 }
 
+#diff-page-diff {
+	margin: 12px;
+}
 #diff-page-diff .at {
 	color: orange;
 }
