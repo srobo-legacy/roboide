@@ -331,6 +331,12 @@ a.button:hover {
 	margin-left: 75px;
 	margin-top: -1.45em;
 }
+#about-shortcuts {
+	font-size: 0.95em;
+}
+#about-shortcuts dd {
+	margin-left: 125px;
+}
 
 #grey-out {
 	background-color: #DFDBD8;
