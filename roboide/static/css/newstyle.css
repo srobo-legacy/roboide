@@ -313,16 +313,20 @@ a.button:hover {
 	font-size: 1.6em;
 	font-weight: bold;
 }
-#about-list {
-	margin: 15px auto;
+#about-box fieldset {
+	margin: 4px;
+	padding: 0;
+}
+#about-box dl {
+	margin: 10px auto;
 	text-align: left;
 	width: 350px;
 }
-#about-list dt {
+#about-box dt {
 	line-height: 1.4em;
 	font-weight: bold;
 }
-#about-list dd {
+#about-box dd {
 	line-height: 1.4em;
 	margin-left: 75px;
 	margin-top: -1.45em;
