@@ -1,2 +1,0 @@
-db_module=roboide.model
-history_dir=$base/roboide/sqlobject-history
