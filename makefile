@@ -7,7 +7,7 @@ dev:
 	paster setup-app development.ini
 
 run:
-	paster serve development.ini
+	paster serve --reload development.ini
 
 clean:
 	rm -rf repos
