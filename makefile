@@ -1,4 +1,4 @@
-.PHONY run dev clean
+.PHONY: run dev clean
 
 dev:
 	mkdir repos
