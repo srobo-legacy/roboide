@@ -1,6 +1,11 @@
+
+# Turbogears imports
 from turbogears import controllers, expose, config
 import cherrypy, model
 from sqlobject import sqlbuilder
+from cherrypy.lib.cptools import serveFile
+
+# Standard library imports
 import logging
 import bzrlib.errors, bzrlib.tree, bzrlib.revisionspec
 import time, datetime, StringIO
@@ -9,13 +14,14 @@ import tempfile, shutil
 import os, sys, os.path
 import zipfile
 import random
-from cherrypy.lib.cptools import serveFile
+import string
 import subprocess
+
+# Import SR code
 import sr
 import autosave as srautosave
 import user as srusers
 import fw, switchboard, admin
-import string
 from vcs_bzr import ProjectWrite, open_branch, open_repo, WorkingTree
 
 log = logging.getLogger("roboide.controllers")
