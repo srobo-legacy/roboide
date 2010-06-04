@@ -1,7 +1,7 @@
 
 # Turbogears imports
-from turbogears import config, expose
-import model
+from tg import configuration as config, expose
+from roboide import model
 
 # Import SR code
 import user as srusers

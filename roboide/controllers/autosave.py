@@ -1,7 +1,7 @@
 
 # Turbogears imports
-from turbogears import expose
-import model
+from tg import expose
+from roboide import model
 
 # Standard library imports
 import os

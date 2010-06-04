@@ -1,7 +1,9 @@
 
 # Turbogears imports
-from turbogears import controllers, expose, config
-import cherrypy, model
+from roboide.lib.base import BaseController
+from tg import configuration as config, expose
+from roboide import model
+import cherrypy
 from sqlobject import sqlbuilder
 from cherrypy.lib.cptools import serveFile
 
@@ -18,7 +20,7 @@ import string
 import subprocess
 
 # Import SR code
-import sr
+from roboide import sr
 import autosave as srautosave
 import user as srusers
 import fw, switchboard, admin
@@ -41,7 +43,7 @@ def get_version():
         return ver
     return 'Unknown'
 
-class Root(controllers.RootController):
+class RootController(BaseController):
     user = srusers.User()
     fw = fw.FwServe()
     autosave = srautosave.Autosave()

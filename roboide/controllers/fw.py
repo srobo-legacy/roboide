@@ -1,7 +1,7 @@
 
 # Turbogears imports
-from turbogears import config, expose
-import model
+from tg import configuration as config, expose
+from roboide import model
 import cherrypy
 from cherrypy.lib.cptools import serveFile
 
@@ -10,7 +10,7 @@ import sha, datetime, time
 import os.path
 
 # Import SR code
-import sr
+from roboide import sr
 
 TEST_PASSES_TO_SHIP = 4
 

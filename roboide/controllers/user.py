@@ -1,11 +1,11 @@
 
 # Turbogears imports
-from turbogears import config, expose
-import model
+from tg import configuration as config, expose
+from roboide import model
 import cherrypy
 
 # Import SR code
-import sr
+from roboide import sr
 
 def anon_login():
     """LDAP Anonymous Login"""
