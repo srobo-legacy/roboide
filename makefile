@@ -6,4 +6,4 @@ dev:
 
 clean:
 	rm -rf repos
-	rm devdata.sqlite
+	rm -f devdata.sqlite
