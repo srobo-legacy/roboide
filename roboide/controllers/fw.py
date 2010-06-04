@@ -1,10 +1,16 @@
+
+# Turbogears imports
 from turbogears import config, expose
 import model
 import cherrypy
-import sr
+from cherrypy.lib.cptools import serveFile
+
+# Standard library imports
 import sha, datetime, time
 import os.path
-from cherrypy.lib.cptools import serveFile
+
+# Import SR code
+import sr
 
 TEST_PASSES_TO_SHIP = 4
 

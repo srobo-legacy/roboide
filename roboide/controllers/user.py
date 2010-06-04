@@ -1,6 +1,10 @@
+
+# Turbogears imports
 from turbogears import config, expose
 import model
 import cherrypy
+
+# Import SR code
 import sr
 
 def anon_login():

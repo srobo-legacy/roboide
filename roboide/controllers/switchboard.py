@@ -1,8 +1,14 @@
+
+# Turbogears imports
 from turbogears import config, expose
-import feedparser
 import model
-import user as srusers
+
+# Standard library imports
+import feedparser
 import time
+
+# Import SR code
+import user as srusers
 
 sr_message_feed = "http://sr2010messages.blogspot.com/feeds/posts/default?alt=rss"
 sr_timeline_events = [{"date":"September 19, 2009", "title":"KickStart", "desc":"KickStart: Competition launch"},

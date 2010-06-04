@@ -1,7 +1,13 @@
+
+# Turbogears imports
 from turbogears import expose
 import model
+
+# Standard library imports
 import os
 import string
+
+# Import SR code
 import user as srusers
 
 class Autosave(object):

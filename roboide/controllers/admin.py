@@ -1,5 +1,9 @@
+
+# Turbogears imports
 from turbogears import config, expose
 import model
+
+# Import SR code
 import user as srusers
 
 class Admin(object):

@@ -1,7 +1,10 @@
+# Standard library imports
 import bzrlib.branch, bzrlib.repository, bzrlib.workingtree, bzrlib.tree, bzrlib.errors, bzrlib.progress, bzrlib.merge, bzrlib.generate_ids, bzrlib.revision
 import os, shutil
-import user as srusers
 import tempfile
+
+# Import SR code
+import user as srusers
 
 class ProjectWrite():
     """
