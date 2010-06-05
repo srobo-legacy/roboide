@@ -1,7 +1,7 @@
 
 # Turbogears imports
 from roboide.lib.base import BaseController
-from tg import configuration as config, expose
+from tg import config, expose
 from roboide import model
 import cherrypy
 from sqlobject import sqlbuilder

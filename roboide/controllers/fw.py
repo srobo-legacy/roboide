@@ -1,6 +1,6 @@
 
 # Turbogears imports
-from tg import configuration as config, expose
+from tg import config, expose
 from roboide import model
 import cherrypy
 from cherrypy.lib.cptools import serveFile
