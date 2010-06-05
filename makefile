@@ -10,7 +10,7 @@ dev: repos bzr devdata.sqlite
 repos:
 	mkdir repos
 devdata.sqlite:
-	tg-admin -c dev.cgf sql create
+	tg-admin -c dev.cfg sql create
 
 bzr: $(BZR_REPOS)
 
