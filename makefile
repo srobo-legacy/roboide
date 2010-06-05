@@ -1,13 +1,13 @@
 BZR_REPOS = repos/1 repos/2
 BZR_INIT = bzr init-repo --no-trees --pack-0.92
 
-.PHONY: all dev bzr clean
+.PHONY: all dev bzr-repos clean
 
 all: dev
 
-dev: bzr devdata.sqlite
+dev: bzr-repos devdata.sqlite
 
-bzr: repos $(BZR_REPOS)
+bzr-repos: repos $(BZR_REPOS)
 
 repos:
 	mkdir repos
