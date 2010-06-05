@@ -9,6 +9,7 @@ dev: repos bzr devdata.sqlite
 
 repos:
 	mkdir repos
+
 devdata.sqlite:
 	tg-admin -c dev.cgf sql create
 
