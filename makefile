@@ -1,14 +1,26 @@
-.PHONY: run dev clean
+BZR_REPOS = repos/1 repos/2
+BZR_INIT = bzr init-repo --no-trees --pack-0.92
 
-dev:
+.PHONY: all run dev bzr-repos clean
+
+all: dev
+
+dev: bzr-repos devdata.sqlite
+
+bzr-repos: repos $(BZR_REPOS)
+
+repos:
 	mkdir repos
-	bzr init-repo --no-trees --pack-0.92 repos/1
-	bzr init-repo --no-trees --pack-0.92 repos/2
+
+devdata.sqlite:
 	paster setup-app development.ini
+
+$(BZR_REPOS):
+	$(BZR_INIT) $@
 
 run:
 	paster serve --reload development.ini
 
 clean:
 	rm -rf repos
-	rm devdata.sqlite
+	rm -f devdata.sqlite
