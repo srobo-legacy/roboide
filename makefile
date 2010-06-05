@@ -7,13 +7,13 @@ all: dev
 
 dev: bzr devdata.sqlite
 
+bzr: repos $(BZR_REPOS)
+
 repos:
 	mkdir repos
 
 devdata.sqlite:
 	tg-admin -c dev.cgf sql create
-
-bzr: repos $(BZR_REPOS)
 
 $(BZR_REPOS):
 	$(BZR_INIT) $@
