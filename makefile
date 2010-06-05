@@ -5,11 +5,11 @@ BZR_INIT = bzr init-repo --no-trees --pack-0.92
 
 all: dev
 
-dev: repos bzr def.cfg
+dev: repos bzr devdata.sqlite
 
 repos:
 	mkdir repos
-def.cfg:
+devdata.sqlite:
 	tg-admin -c dev.cgf sql create
 
 bzr: $(BZR_REPOS)
