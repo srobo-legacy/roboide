@@ -3,6 +3,7 @@
 from tg import config, expose
 from roboide import model
 import cherrypy
+from paste.deploy.converters import asbool, aslist
 
 # Import SR code
 from roboide import sr
@@ -33,8 +34,8 @@ def in_team():
 
 def is_ide_admin():
     """Returns True if the current user is an IDE Admin, False otherwise"""
-    if dev_env() and not config.get( "user.use_ldap" ):
-        return config.get( "user.can_admin" )
+    if dev_env() and not use_ldap():
+        return asbool(config.get( "user.can_admin" ))
     else:
         username = get_curuser()
         if username == None or username not in sr.users.list():
@@ -86,7 +87,7 @@ class User(object):
         FAIL = {"login": 0}
 
         # When not using LDAP, logins are always successful
-        if dev_env() and not config.get( "user.use_ldap" ):
+        if dev_env() and not use_ldap():
             return SUCCESS
 
         if usr == "" and pwd == "":
@@ -136,13 +137,17 @@ class User(object):
 
 def dev_env():
     """Returns True if we're in a development environment"""
-    return config.get("server.environment" ) == "development"
+    return asbool(config.get( "debug" ))
+
+def use_ldap():
+    """Returns True if we're using ldap"""
+    return asbool(config.get( "user.use_ldap" ))
 
 def get_curuser():
     """Returns the user we're currently acting as.
     Returns None if not logged in."""
 
-    if dev_env() and not config.get( "user.use_ldap" ):
+    if dev_env() and not use_ldap():
         return config.get( "user.default" )
     else:
         # Use LDAP
@@ -158,9 +163,9 @@ def getteams():
 
     groups = None
 
-    if dev_env() and not config.get( "user.use_ldap" ):
+    if dev_env() and not use_ldap():
         # Use the default group list when not using LDAP
-        groups = config.get( "user.default_groups" )
+        groups = aslist(config.get( "user.default_groups" ))
     else:
         if username in sr.users.list():
             user = sr.user(username)

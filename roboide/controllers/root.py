@@ -6,6 +6,7 @@ from roboide import model
 import cherrypy
 from sqlobject import sqlbuilder
 from cherrypy.lib.cptools import serveFile
+from paste.deploy.converters import asbool
 
 # Standard library imports
 import logging
@@ -51,7 +52,8 @@ class RootController(BaseController):
     admin = admin.Admin()
     version = get_version()
 
-    if config.get("simulator.enabled"):    # if simulation is enabled import the simulator controller
+    # if simulation is enabled import the simulator controller
+    if asbool(config.get("simulator.enabled")):
         import sim
         sim = sim.Sim()
 
@@ -872,7 +874,7 @@ class RootController(BaseController):
         """
         # First check to see if live robot logging is enabled on the server
         # If it isn't enabled then return "disabled" to tell client not to poll
-        if not config.get("robolog.enabled"):
+        if not asbool(config.get("robolog.enabled")):
             return {"ping" : 0,
                     "data" : "",
                     "present" : 0,
