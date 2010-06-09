@@ -55,10 +55,12 @@ class User(object):
 
         teams = {}
         for team in getteams():
-            try:
-                teams[team] = model.TeamNames.get(team).name
-            except model.SQLObjectNotFound:
+            rows = model.TeamNames.get_by(id=team)
+            if rows is None:
                 teams[team] = "Unnamed team"
+            else:
+                teams[team] = rows.first().name
+
 
         # Get the setting values
         svals = model.SettingValues.select( model.SettingValues.q.uname == user )
