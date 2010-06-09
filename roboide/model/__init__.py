@@ -5,6 +5,7 @@ from zope.sqlalchemy import ZopeTransactionExtension
 from sqlalchemy.orm import scoped_session, sessionmaker
 #from sqlalchemy import MetaData
 from sqlalchemy.ext.declarative import declarative_base
+from elixir import setup_all
 
 # Global session manager: DBSession() returns the Thread-local
 # session object appropriate for the current web request.
@@ -42,6 +43,9 @@ def init_model(engine):
     """Call me before using any of the tables or classes in the model."""
 
     DBSession.configure(bind=engine)
+
+    # elixir table setup
+    setup_all()
     # If you are using reflection to introspect your database and create
     # table objects for you, your tables must be defined and mapped inside
     # the init_model function, so that the engine is available if you
@@ -60,3 +64,8 @@ def init_model(engine):
 
 # Import your model modules here.
 from roboide.model.auth import User, Group, Permission
+from roboide.model.model import TeamNames, Settings, SettingValues, \
+    RoboPresent, RoboLogs, AutoSave, UserBlogFeeds
+
+from roboide.model.fw_model import FirmwareTargets, FirmwareBlobs, \
+    FirmwareState, FirmwareTesting
