@@ -15,7 +15,7 @@ class Settings(Entity):
     # The setting name
     name = Field(String(40))
     # The setting description
-    description = Field(String(40))
+    description = Field(String(140))
 
 class RoboPresent(Entity):
     team = ManyToOne('TeamNames')
@@ -27,7 +27,7 @@ class RoboLogs(Entity):
     #Time log was written
     date = Field(DateTime, default=datetime.datetime.now)
     #Value written
-    value = Field(String(40))
+    value = Field(UnicodeText)
 
 # Holds the settings
 class SettingValues(Entity):
@@ -41,7 +41,7 @@ class SettingValues(Entity):
 # Holds the autosaved files
 class AutoSave(Entity):
     # The full file name and path
-    file_path = Field(String(40))
+    file_path = Field(UnicodeText)
     # The revision that the file is based on
     revision = Field(Integer)
     # The team of the user that saved the file
@@ -51,7 +51,7 @@ class AutoSave(Entity):
     # The date and time of the save, defaults to now
     date = Field(DateTime, default=datetime.datetime.now)
     # The file contents
-    content = Field(String(40))
+    content = Field(UnicodeText)
 
 class FirmwareTargets(Entity):
     """Devices that we manage firmware for."""
@@ -75,7 +75,7 @@ class FirmwareBlobs(Entity):
     revision = Field(String(40))
 
     # A description of the firmware.  Could contain a changelog.
-    description = Field(String(40))
+    description = Field(UnicodeText)
 
 class FirmwareState(Entity):
     # The firmware this relates to. (ForeignKey doesn't work in the sqlobject on button)
@@ -85,7 +85,7 @@ class FirmwareState(Entity):
     date = Field(Date)
 
     # An message to go with the state change
-    message = Field(String(40))
+    message = Field(UnicodeText)
 
     # The state the firmware changed to
     state = Field(Enum([
@@ -108,7 +108,7 @@ class FirmwareTesting(Entity):
     date = Field(Date)
 
     # An message to go with the test result
-    message = Field(String(40))
+    message = Field(UnicodeText)
 
     # The result of the firmware test
     result = Field(Boolean)
@@ -117,7 +117,7 @@ class UserBlogFeeds(Entity):
 	#the user id
 	user = Field(String(40))
 	#the url of the rss/atom feed
-	url = Field(String(40))
+	url = Field(String(255))
 	#validated by student robotics admin
 	valid = Field(Boolean)
 	#checked by student robotics admin
