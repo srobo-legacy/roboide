@@ -1,118 +1,124 @@
 from turbogears.database import PackageHub
-from sqlobject import *
+from elixir import *
+import datetime
+from custom_types.enum import Enum
 
 hub = PackageHub("roboide")
 __connection__ = hub
 
 # Holds ID to team name mappings
-class TeamNames(SQLObject):
-    name = StringCol()
+class TeamNames(Entity):
+    name = Field(String(40))
 
 # Holds the setting name -> ID mapping
-class Settings(SQLObject):
+class Settings(Entity):
     # The setting name
-    name = StringCol()
+    name = Field(String(40))
     # The setting description
-    description = StringCol()
+    description = Field(String(40))
 
-class RoboPresent(SQLObject):
-    team = ForeignKey('TeamNames')
-    present = BoolCol()
+class RoboPresent(Entity):
+    team = ManyToOne('TeamNames')
+    present = Field(Boolean)
 
-class RoboLogs(SQLObject):
+class RoboLogs(Entity):
     #The team
-    team = ForeignKey('TeamNames')
+    team = ManyToOne('TeamNames')
     #Time log was written
-    date = DateTimeCol(default = DateTimeCol.now)
+    date = Field(DateTime, default=datetime.datetime.now)
     #Value written
-    value = StringCol()
+    value = Field(String(40))
 
 # Holds the settings
-class SettingValues(SQLObject):
+class SettingValues(Entity):
     # The setting ID
-    setting_id = IntCol()
+    setting_id = Field(Integer)
     # The user that this setting is for
-    uname = StringCol()
+    uname = Field(String(40))
     # The setting value
-    value = StringCol()
+    value = Field(String(40))
 
 # Holds the autosaved files
-class AutoSave(SQLObject):
+class AutoSave(Entity):
     # The full file name and path
-    file_path = StringCol()
+    file_path = Field(String(40))
     # The revision that the file is based on
-    revision = IntCol()
+    revision = Field(Integer)
     # The team of the user that saved the file
-    team_id = IntCol()
+    team_id = Field(Integer)
     # The user that saved the file
-    uname = StringCol()
+    uname = Field(String(40))
     # The date and time of the save, defaults to now
-    date = DateTimeCol(default = DateTimeCol.now)
+    date = Field(DateTime, default=datetime.datetime.now)
     # The file contents
-    content = StringCol()
+    content = Field(String(40))
 
-class FirmwareTargets(SQLObject):
+class FirmwareTargets(Entity):
     """Devices that we manage firmware for."""
     # The name of the device.
-    name = StringCol()
+    name = Field(String(40))
 
-class FirmwareBlobs(SQLObject):
+class FirmwareBlobs(Entity):
     # The device (ForeignKey doesn't work in the sqlobject on button)
-    device = IntCol() #ForeignKey("FirmwareTargets")
+    device = Field(Integer) #ForeignKey("FirmwareTargets")
 
     # The version number
-    version = IntCol()
+    version = Field(Integer)
 
     # The firmware filename
-    firmware = StringCol()
+    firmware = Field(String(40))
 
     # The revision number in VC that the firmware is built from.
     # Current supported formats:
     #  - "svn:REV" where REV is the subversion commit number.
     #  - "git:SHA" where SHA is the git commit hash.
-    revision = StringCol()
+    revision = Field(String(40))
 
     # A description of the firmware.  Could contain a changelog.
-    description = StringCol()
+    description = Field(String(40))
 
-class FirmwareState(SQLObject):
+class FirmwareState(Entity):
     # The firmware this relates to. (ForeignKey doesn't work in the sqlobject on button)
-    fw_id = IntCol() #ForeignKey("FirmwareBlobs")
+    fw_id = Field(Integer) #ForeignKey("FirmwareBlobs")
 
     # The date and time of state change
-    date = DateTimeCol()
+    date = Field(Date)
 
     # An message to go with the state change
-    message = StringCol()
+    message = Field(String(40))
 
     # The state the firmware changed to
-    state = EnumCol( enumValues = [ "ALLOCATED",
+    state = Field(Enum([
+                                    "ALLOCATED",
                                     "DEVEL",
                                     "TESTING",
                                     "SHIPPING",
                                     "FAILED",
                                     "OLD_RELEASE",
-                                    "SUPERCEDED" ] )
+                                    "SUPERCEDED"
+                       ]
+                , strict=True )
+            )
 
-class FirmwareTesting(SQLObject):
+class FirmwareTesting(Entity):
     # The firmware this relates to. (ForeignKey doesn't work in the sqlobject on button)
-    fw_id = IntCol() #ForeignKey("FirmwareBlobs")
+    fw_id = Field(Integer) #ForeignKey("FirmwareBlobs")
 
     # The date and time of the test result
-    date = DateTimeCol()
+    date = Field(Date)
 
     # An message to go with the test result
-    message = StringCol()
+    message = Field(String(40))
 
     # The result of the firmware test
-    result = BoolCol()
+    result = Field(Boolean)
 
-class UserBlogFeeds(SQLObject):
+class UserBlogFeeds(Entity):
 	#the user id
-	user = StringCol()
+	user = Field(String(40))
 	#the url of the rss/atom feed
-	url = StringCol()
+	url = Field(String(40))
 	#validated by student robotics admin
-	valid = BoolCol()
+	valid = Field(Boolean)
 	#checked by student robotics admin
-	checked = BoolCol()
+	checked = Field(Boolean)
