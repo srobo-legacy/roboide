@@ -1,10 +1,6 @@
-from turbogears.database import PackageHub
 from elixir import *
 import datetime
-from custom_types.enum import Enum
-
-hub = PackageHub("roboide")
-__connection__ = hub
+from roboide.model import metadata as __metadata__, DBSession as __session__
 
 # Holds ID to team name mappings
 class TeamNames(Entity):

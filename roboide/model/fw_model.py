@@ -1,6 +1,7 @@
 from elixir import *
 import datetime
 from custom_types.enum import Enum
+from roboide.model import metadata as __metadata__, DBSession as __session__
 
 class FirmwareTargets(Entity):
     """Devices that we manage firmware for."""
