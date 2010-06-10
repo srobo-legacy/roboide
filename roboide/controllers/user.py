@@ -63,11 +63,10 @@ class User(object):
 
 
         # Get the setting values
-        svals = model.SettingValues.select( model.SettingValues.q.uname == user )
+        svals = model.SettingValues.query.filter_by(uname = user)
         settings = {}
-        for sval in svals.lazyIter():
-            sname = model.Settings.get(sval.setting_id).name
-            settings[sname] = sval.value
+        for sval in svals.all():
+            settings[sval.setting.name] = sval.value
 
         return { "user" : user,
                  "teams" : teams,
@@ -117,25 +116,25 @@ class User(object):
 
     def set_setting(self, name, value, description=""):
         """set one of the user settngs as specified by name."""
-        sids = model.Settings.select(model.Settings.q.name == name)
+        sids = model.Settings.query.filter_by(name = name)
         if sids.count() > 0:
-            sid = sids[0].id
+            s = sids.first()
         else:
-            sid = self.add_setting(name, description)
+            s = self.add_setting(name, description)
         user = str(get_curuser())
-        settings = model.SettingValues.select(
-            model.AND(model.SettingValues.q.uname == user,
-                model.SettingValues.q.setting_id == sid)
+        settings = model.SettingValues.query.filter_by(
+                uname = user,
+                setting = s
             )
         if(settings.count() > 0):  #if it exists update it
-            settings[0].set(value = value)
+            settings.first().value = value
         else:
-            model.SettingValues(uname = user, setting_id = sid, value = value)
+            model.SettingValues(uname = user, setting = s, value = value)
         return
 
     def add_setting(self, name, description):
         """add a possible user settng as specified by name."""
-        return model.Settings(name = name, description = description).id
+        return model.Settings(name = name, description = description)
 
 def dev_env():
     """Returns True if we're in a development environment"""

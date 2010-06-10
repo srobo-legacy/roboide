@@ -28,7 +28,7 @@ class RoboLogs(Entity):
 # Holds the settings
 class SettingValues(Entity):
     # The setting ID
-    setting_id = Field(Integer)
+    setting = ManyToOne('Settings')
     # The user that this setting is for
     uname = Field(String(40))
     # The setting value
