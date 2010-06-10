@@ -41,7 +41,7 @@ class AutoSave(Entity):
     # The revision that the file is based on
     revision = Field(Integer)
     # The team of the user that saved the file
-    team_id = Field(Integer)
+    team = ManyToOne('TeamNames')
     # The user that saved the file
     uname = Field(String(40))
     # The date and time of the save, defaults to now
