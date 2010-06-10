@@ -1,6 +1,7 @@
 
 # Turbogears imports
 from tg import config, expose
+from sqlalchemy.orm.exc import NoResultFound
 from roboide import model
 
 # Import SR code
@@ -14,9 +15,9 @@ class Admin(object):
 		Change the name of the team with id=id to the passed name
 		"""
 		try:
-			team = model.TeamNames.get(id)
+			team = model.TeamNames.query.filter_by(id=id).one()
 			team.name = name
-		except model.SQLObjectNotFound:
+		except NoResultFound:
 			team = model.TeamNames(id=id, name=name)
 		team.set()
 		return dict(success=1, id=id, name=name)
