@@ -27,7 +27,7 @@ class Admin(object):
 		"""
 		List all the blog feeds in the DB
 		"""
-		feeds = model.UserBlogFeeds.selectBy()
+		feeds = model.UserBlogFeeds.query.all()
 		return dict(feeds=list(feeds))
 
 	@expose("json")
@@ -36,9 +36,9 @@ class Admin(object):
 		"""
 		Change the status of a particular feed
 		"""
-		feeds = model.UserBlogFeeds.selectBy(id=id, url=url)
+		feeds = model.UserBlogFeeds.query.filter_by(id=id, url=url)
 		try:
-			feed = feeds.getOne()
+			feed = feeds.one()
 			if status == 'valid':
 				feed.checked = True
 				feed.valid = True

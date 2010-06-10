@@ -74,7 +74,7 @@ class StudentBlogPosts():
 		self.time = time.time()
 		#get all feeds which have been validated
 		try:
-			allfeeds = model.UserBlogFeeds.selectBy(valid=True)
+			allfeeds = model.UserBlogFeeds.query.filter_by(valid=True).all()
 		except:
 			#either no feeds or an sql error
 			return
@@ -148,9 +148,9 @@ class Switchboard(object):
 
 		# grab the sql record, edit the url, commit it
 		try:
-			r = model.UserBlogFeeds.selectBy(user=cur_user)
+			r = model.UserBlogFeeds.query.filter_by(user=cur_user)
 			try:
-				row = r.getOne()
+				row = r.one()
 				if feedurl != row.url:
 					row.valid = False	# will need to be re-validated
 					row.checked = False
@@ -187,9 +187,9 @@ class Switchboard(object):
 
 		# grab the sql record for the user, if it exists and extract the url
 		try:
-			r = model.UserBlogFeeds.selectBy(user=cur_user)
+			r = model.UserBlogFeeds.query.filter_by(user=cur_user)
 			try:
-				row = r.getOne()
+				row = r.one()
 			except:
 				# the record doesn't exist, return blank
 				return dict(feedurl="", valid=0, checked=0, error=0)
