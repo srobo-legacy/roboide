@@ -1,6 +1,7 @@
 
 # Turbogears imports
 from tg import expose
+from sqlalchemy import or_
 from roboide import model
 
 # Standard library imports
@@ -66,15 +67,14 @@ class Autosave(object):
     @srusers.require(srusers.in_team())
     def move(self, team, src, dest):
         user = str(srusers.get_curuser())
-        src_team = int(team)
+        src_team = model.TeamNames.get(int(team))
 
         #build a test for things that match the user and team
-        test_set = model.AND(model.AutoSave.q.team_id == src_team, model.AutoSave.q.uname == user,
-                                model.AutoSave.q.file_path.startswith(src))
+        test_set = model.AutoSave.query.filter_by(team_id = src_team, uname = user)
 
-        files = model.AutoSave.select(test_set)
+        files = test_set.filter(model.AutoSave.file_path.startswith(src)).all()
 
-        if files.count() > 0:   #if there's some files
+        if len(files) > 0:   #if there's some files
             for f in files:
                 new_path = string.replace(f.file_path, src, dest, 1)
                 f.set(file_path = new_path)
@@ -84,16 +84,19 @@ class Autosave(object):
     @srusers.require(srusers.in_team())
     def delete(self, team, path):
         user = str(srusers.get_curuser())
-        src_team = int(team)
+        src_team = model.TeamNames.get(int(team))
         path_dir = str(path+"/")
 
         #build the tests: match team, user and ( path match OR path begins with given path plus a / )
-        test_set = model.AND(model.AutoSave.q.team_id == src_team, model.AutoSave.q.uname == user,
-                    model.OR(model.AutoSave.q.file_path == path, model.AutoSave.q.file_path.startswith(path_dir)))
-        files = model.AutoSave.select(test_set)
+        test_set = model.AutoSave.query.filter_by(team = src_team, uname = user)
 
-        if files.count() > 0:   #if there's some files
-            files[0].destroySelf()
+        files = test_set.filter(or_(
+                    model.AutoSave.file_path == path,   # exactly that file
+                    model.AutoSave.file_path.startswith(path_dir)   # a file in that folder
+                )).all()
+
+        if len(files) > 0:   #if there's some files
+            files[0].delete()
             return {}
         else:
             return { 'error' : 'no file to delete' }
