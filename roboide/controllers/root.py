@@ -1,11 +1,9 @@
 
 # Turbogears imports
 from roboide.lib.base import BaseController
-from tg import config, expose
+from tg import config, expose, response
 from roboide import model
-import cherrypy
 from sqlobject import sqlbuilder
-from cherrypy.lib.cptools import serveFile
 from paste.deploy.converters import asbool
 
 # Standard library imports
@@ -63,8 +61,13 @@ class RootController(BaseController):
         In case the apache rewrite rule isn't paying attention, serve up the
         index file from here.
         """
-        loc = os.path.join(os.path.dirname(__file__), "static/index.html")
-        return serveFile(loc)
+
+        loc = os.path.join(os.path.dirname(__file__), "../public/index.html")
+        index_file_pointer = open(loc)
+        file_contents = index_file_pointer.read()
+        index_file_pointer.close()
+        response.headers['Content-Type'] = 'text/html'
+        return file_contents
 
     @expose("json")
     def info(self):
@@ -185,9 +188,8 @@ class RootController(BaseController):
             zipData = StringIO.StringIO(sysZipBuffer.read())
 
         #Set up headers for correctly serving a zipfile
-        cherrypy.response.headers['Content-Type'] = \
-                "application/x-download"
-        cherrypy.response.headers['Content-Disposition'] = \
+        response.headers['Content-Type'] = "application/x-download"
+        response.headers['Content-Disposition'] = \
                 'attachment; filename="' + ZIPNAME + '"'
 
         #Return the data
