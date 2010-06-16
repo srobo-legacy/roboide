@@ -1,7 +1,7 @@
 BZR_REPOS = repos/1 repos/2
 BZR_INIT = bzr init-repo --no-trees --pack-0.92
 
-.PHONY: all dev bzr-repos run clean
+.PHONY: all dev bzr-repos run clean clean-pyc
 
 all: dev
 
@@ -21,8 +21,10 @@ $(BZR_REPOS):
 run: dev
 	./start-roboide.py dev.cfg
 
-clean:
+clean: clean-pyc
 	rm -rf repos
 	rm -f devdata.sqlite
-	find -name *.pyc | xargs rm
+
+clean-pyc:
+	find -name *.pyc | xargs rm -f
 
