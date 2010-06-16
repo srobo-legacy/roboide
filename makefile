@@ -24,4 +24,5 @@ run: dev
 clean:
 	rm -rf repos
 	rm -f devdata.sqlite
+	find -name *.pyc | xargs rm
 
