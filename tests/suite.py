@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 #munge path to include roboide code
 import sys
 slice_end = __file__.rfind("/");
