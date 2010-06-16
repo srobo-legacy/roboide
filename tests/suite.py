@@ -9,9 +9,11 @@ update_config(configfile="../dev.cfg",modulename="roboide.config")
 
 import unittest
 import empty_state
+import new_object_state
 
 suite = unittest.TestSuite()
 suite.addTests(unittest.TestLoader().loadTestsFromModule(empty_state))
+suite.addTests(unittest.TestLoader().loadTestsFromModule(new_object_state))
 
 if __name__ == "__main__":
     unittest.TextTestRunner(verbosity=2).run(suite)
