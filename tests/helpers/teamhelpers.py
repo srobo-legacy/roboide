@@ -3,8 +3,11 @@ import sys
 slice_end = __file__.rfind("/");
 sys.path.append(__file__[0:slice_end+1]+"../../")
 
-import roboide.model as model
+# TurboGears imports
 from turbogears import config
+
+# roboide imports
+import roboide.model as model
 from roboide.user import *
 
 def get_team_dictionary():

@@ -1,7 +1,11 @@
+
+# Standard imports
 import unittest
 import httplib
 import json
 import helpers
+
+# TurboGears imports
 from turbogears import config
 
 class TestTeamFunctions(unittest.TestCase):

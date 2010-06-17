@@ -1,8 +1,12 @@
+
+# Standard imports
 import unittest
 import httplib
 import json
 import helpers
 import os
+
+# TurboGears imports
 from turbogears import config
 
 class TestProjectFunctions(unittest.TestCase):
