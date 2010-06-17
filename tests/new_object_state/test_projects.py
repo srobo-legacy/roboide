@@ -3,10 +3,13 @@ import httplib
 import json
 import helpers
 import os
+from turbogears import config
 
 class TestProjectFunctions(unittest.TestCase):
     def setUp(self):
-        self.connection = httplib.HTTPConnection("localhost:8080")
+        port =  config.get('server.socket_port')
+        host =  config.get('server.socket_host')
+        self.connection = httplib.HTTPConnection(host, port)
 
     def tearDown(self):
         self.connection.close()
@@ -15,7 +18,7 @@ class TestProjectFunctions(unittest.TestCase):
 
 
     def test_create_project(self):
-        self.connection.request("GET", "http://localhost:8080/createproj?name=new-project&team=1")
+        self.connection.request("GET", "/createproj?name=new-project&team=1")
         response = self.connection.getresponse()
         print response.read()
         self.assertEqual(helpers.does_project_exist(1, "new-project"), True, "created project did not exist")
