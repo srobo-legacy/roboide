@@ -38,7 +38,7 @@ DB_SWAP = s/devdata.sqlite/testdata.sqlite/
 .PHONY: test test-run test-bzr-repos test-clean
 
 test: test-clean test-bzr-repos testdata.sqlite test.cfg
-	nc localhost 8080 -c tests/suite.py
+	tests/suite.py
 
 test.cfg:
 	sed $(DB_SWAP) dev.cfg | sed $(REPO_SWAP) > test.cfg
