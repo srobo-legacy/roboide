@@ -2,7 +2,8 @@ from turbogears import config, expose
 import model
 import cherrypy
 import sr
-import sha, datetime, time
+import datetime, time
+from hashlib import sha1 as sha
 import os.path
 from cherrypy.lib.cptools import serveFile
 
