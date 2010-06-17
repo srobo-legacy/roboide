@@ -17,11 +17,13 @@ suite.addTests(unittest.TestLoader().loadTestsFromModule(empty_state))
 suite.addTests(unittest.TestLoader().loadTestsFromModule(new_object_state))
 
 if __name__ == "__main__":
+    #grab the config file
     if len(sys.argv) > 1:
         update_config(configfile=sys.argv[1],modulename="roboide.config")
     else:
         sys.exit('No config file specified')
 
+    #check that the IDE is running
     conn = httplib.HTTPConnection("localhost:8080")
     done = False
     while not done:
@@ -34,5 +36,6 @@ if __name__ == "__main__":
             time.sleep(2)
     conn.close()
 
+    #Run the tests
     unittest.TextTestRunner(verbosity=2).run(suite)
 
