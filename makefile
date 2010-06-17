@@ -18,7 +18,7 @@ devdata.sqlite:
 $(BZR_REPOS):
 	$(BZR_INIT) $@
 
-run:
+run: dev
 	paster serve --reload development.ini
 
 clean:
