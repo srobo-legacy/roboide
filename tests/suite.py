@@ -5,7 +5,7 @@ import sys
 slice_end = __file__.rfind("/");
 sys.path.append(__file__[0:slice_end+1]+"../")
 
-from turbogears import update_config
+from turbogears import update_config, config
 
 import unittest
 import empty_state
@@ -24,14 +24,16 @@ if __name__ == "__main__":
         sys.exit('No config file specified')
 
     #check that the IDE is running
-    conn = httplib.HTTPConnection("localhost:8080")
+    port =  config.get('server.socket_port')
+    host =  config.get('server.socket_host')
+    conn = httplib.HTTPConnection(host, port)
     done = False
     while not done:
         try:
             conn.connect()
             done = True
         except socket.error:
-            print 'Connection refused on localhost:8080. Is the IDE running?'
+            print 'Connection refused on %s:%s. Is the IDE running?' % (host, port)
             print 'Retrying connection.'
             time.sleep(2)
     conn.close()

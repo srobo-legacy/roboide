@@ -2,10 +2,13 @@ import unittest
 import httplib
 import json
 import helpers
+from turbogears import config
 
 class TestTeamFunctions(unittest.TestCase):
     def setUp(self):
-        self.connection = httplib.HTTPConnection("localhost:8080")
+        port =  config.get('server.socket_port')
+        host =  config.get('server.socket_host')
+        self.connection = httplib.HTTPConnection(host, port)
 
     def tearDown(self):
         self.connection.close()
