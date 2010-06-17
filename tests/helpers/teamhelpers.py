@@ -4,7 +4,7 @@ slice_end = __file__.rfind("/");
 sys.path.append(__file__[0:slice_end+1]+"../../")
 
 import roboide.model as model
-from turbogears import config,expose
+from turbogears import config
 from roboide.user import *
 
 def get_team_dictionary():
