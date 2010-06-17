@@ -9,6 +9,9 @@ import os
 # TurboGears imports
 from turbogears import config
 
+# roboide imports
+from roboide.user import get_repopath
+
 class TestProjectFunctions(unittest.TestCase):
     def setUp(self):
         port =  config.get('server.socket_port')
@@ -17,8 +20,8 @@ class TestProjectFunctions(unittest.TestCase):
 
     def tearDown(self):
         self.connection.close()
-        os.system("rm -rf ../repos/1/*")
-        os.system("rm -rf ../repos/2/*")
+        for i in range(0,2):
+            os.system("rm -rf %s/*" % get_repopath(i).replace('file:///','/'))
 
 
     def test_create_project(self):

@@ -1,15 +1,12 @@
-#munge path to include roboide
-import sys
-slice_end = __file__.rfind("/");
-sys.path.append(__file__[0 : slice_end+1]+"../../")
 
 # Standard imports
 import os
 
 # roboide imports
-import roboide.model as model
+from roboide.user import get_repopath
 
 def does_project_exist(team, project):
-    team_number = str(team)
-    team_path = team_number + "/" + project
-    return os.path.isdir("../repos/" + team_path)
+    repo_path = get_repopath(team).replace('file:///','/')
+    project_path = repo_path + os.path.sep + project
+    print project_path
+    return os.path.isdir(project_path)
