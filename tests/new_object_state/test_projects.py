@@ -25,8 +25,10 @@ class TestProjectFunctions(unittest.TestCase):
 
 
     def test_create_project(self):
-        self.connection.request("GET", "/createproj?name=new-project&team=1")
+        proj = 'new-project'
+        team = 1
+        self.connection.request("GET", "/createproj?name=%s&team=%s" % (proj, team))
         response = self.connection.getresponse()
         print response.read()
-        self.assertEqual(helpers.does_project_exist(1, "new-project"), True, "created project did not exist")
+        self.assertEqual(helpers.does_project_exist(team, proj), True, "created project did not exist")
 
