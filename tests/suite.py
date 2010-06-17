@@ -5,9 +5,7 @@ import sys
 slice_end = __file__.rfind("/");
 sys.path.append(__file__[0:slice_end+1]+"../")
 
-#include turbogears config
 from turbogears import update_config
-update_config(configfile="../dev.cfg",modulename="roboide.config")
 
 import unittest
 import empty_state
@@ -19,6 +17,11 @@ suite.addTests(unittest.TestLoader().loadTestsFromModule(empty_state))
 suite.addTests(unittest.TestLoader().loadTestsFromModule(new_object_state))
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        update_config(configfile=sys.argv[1],modulename="roboide.config")
+    else:
+        sys.exit('No config file specified')
+
     conn = httplib.HTTPConnection("localhost:8080")
     done = False
     while not done:
