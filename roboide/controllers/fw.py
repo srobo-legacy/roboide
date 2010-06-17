@@ -49,7 +49,7 @@ class FwServe(object):
     def __find_device(self, device):
         """Returns the ID of the given device"""
         r = model.FirmwareTargets.select( model.FirmwareTargets.q.name == device )
-        
+
         if r.count() == 0:
             return False
 
@@ -61,7 +61,7 @@ class FwServe(object):
     def __find_new_ver(self, device_id):
         """Find a new, unused firmware version."""
         r = model.FirmwareBlobs.select( model.FirmwareBlobs.q.device == device_id )
-        
+
         if r.count() == 0:
             return 0
 
@@ -81,14 +81,14 @@ class FwServe(object):
             return "NONE"
 
         latest = r[0]
-        
+
         return latest.state
 
     # In future will require login:
     @expose("json")
     def req_version(self,device,desc,revision):
         """Get a new version number for a firmware image."""
-        
+
         if not self.__check_rev(revision):
             return {"ERROR": "Invalid VC revision string"}
 
@@ -129,7 +129,7 @@ class FwServe(object):
 
         if self.__get_state(fw.id) != "ALLOCATED":
             return {"ERROR": "Firmware already uploaded"}
-        
+
         data = firmware.file.read()
 
         s = sha.new()
@@ -211,11 +211,11 @@ class FwServe(object):
             return {"ERROR": "Device '%s' not found" % device}
 
         state = {}
-        for x in [ "ALLOCATED", 
-                   "DEVEL", 
-                   "TESTING", 
-                   "SHIPPING", 
-                   "FAILED", 
+        for x in [ "ALLOCATED",
+                   "DEVEL",
+                   "TESTING",
+                   "SHIPPING",
+                   "FAILED",
                    "OLD_RELEASE",
                    "SUPERCEDED",
                    "NONE" ]:

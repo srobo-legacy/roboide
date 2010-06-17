@@ -39,13 +39,13 @@ class FirmwareState(Entity):
 
     # The state the firmware changed to
     state = Field(Enum([
-                                    "ALLOCATED",
-                                    "DEVEL",
-                                    "TESTING",
-                                    "SHIPPING",
-                                    "FAILED",
-                                    "OLD_RELEASE",
-                                    "SUPERCEDED"
+                        "ALLOCATED",
+                        "DEVEL",
+                        "TESTING",
+                        "SHIPPING",
+                        "FAILED",
+                        "OLD_RELEASE",
+                        "SUPERCEDED"
                        ]
                 , strict=True )
             )
