@@ -27,6 +27,11 @@ class TestProjectFunctions(unittest.TestCase):
     def test_create_project(self):
         proj = 'new-project'
         team = 1
+        self.connection.request("GET", "/projlist?team=%s" % team)
+        r = self.connection.getresponse().read()
+        p = json.loads(r)['projects']
+        self.assertEqual(p, [], "projects present before first creation")
+
         self.connection.request("GET", "/createproj?name=%s&team=%s" % (proj, team))
         response = self.connection.getresponse()
         print response.read()
