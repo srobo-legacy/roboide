@@ -74,11 +74,13 @@ class FwServe(object):
 
     def __get_state(self, fw_id):
         """Get the state of the given device image."""
-        r = model.FirmwareState.query.filter_by(fw_id = fw_id).all()
+        r = model.FirmwareState.query.filter_by(fw_id =  fw_id)
+        r = r.order_by(model.FirmwareState.date).all()
+
         if len(r) == 0:
             return "NONE"
 
-        latest = r[0]
+        latest = r[-1]
 
         return latest.state
 
