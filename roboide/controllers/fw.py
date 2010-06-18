@@ -1,9 +1,7 @@
 
 # Turbogears imports
-from tg import config, expose
+from tg import config, expose, response
 from roboide import model
-import cherrypy
-from cherrypy.lib.cptools import serveFile
 
 # Standard library imports
 import sha, datetime, time
@@ -21,7 +19,7 @@ class FwServe(object):
     @expose("json")
     def devices(self):
         """Get a list of devices"""
-        s = model.FirmwareTargets.select()
+        s = model.FirmwareTargets.query.all()
         devices = [x.name for x in list(s)]
         return { "devices": devices }
 
@@ -48,24 +46,24 @@ class FwServe(object):
 
     def __find_device(self, device):
         """Returns the ID of the given device"""
-        r = model.FirmwareTargets.select( model.FirmwareTargets.q.name == device )
+        r = model.FirmwareTargets.query.filter_by(name = device).all()
 
-        if r.count() == 0:
+        if len(r) == 0:
             return False
 
-        if r.count() > 1:
+        if len(r) > 1:
             raise "More than one device registered with the name '%s'" % device
 
         return r[0].id
 
     def __find_new_ver(self, device_id):
         """Find a new, unused firmware version."""
-        r = model.FirmwareBlobs.select( model.FirmwareBlobs.q.device == device_id )
+        blobs = model.FirmwareBlobs.query.filter_by(device = device_id).all()
 
-        if r.count() == 0:
+        if len(blobs) == 0:
             return 0
 
-        return r.max("version") + 1
+        return max([blob.version for blob in blobs]) + 1
 
     def __add_state(self, fw_id, message, state):
         """Add a status change message to a firmware image"""
@@ -76,8 +74,8 @@ class FwServe(object):
 
     def __get_state(self, fw_id):
         """Get the state of the given device image."""
-        r = model.FirmwareState.select( model.FirmwareState.q.fw_id == fw_id ).orderBy("-date")
-        if r.count() == 0:
+        r = model.FirmwareState.query.filter_by(fw_id = fw_id).all()
+        if len(r) == 0:
             return "NONE"
 
         latest = r[0]
@@ -122,8 +120,9 @@ class FwServe(object):
             return {"ERROR": "Device '%s' not found" % device}
 
         # Check the version is correct
-        r = model.FirmwareBlobs.selectBy( device = dev_id, version = version )
-        if r.count() == 0:
+        r = model.FirmwareBlobs.query.filter_by(device = dev_id, version = version).all()
+
+        if len(r) == 0:
             return {"ERROR": "Version %i does not exist" % version}
         fw = r[0]
 
@@ -155,13 +154,13 @@ class FwServe(object):
         if dev_id == False:
             return {"ERROR" : "Invalid device '%s'" % device}
 
-        r = model.FirmwareBlobs.selectBy( version = version, device = dev_id )
+        r = model.FirmwareBlobs.query.filter_by(version = version, device = dev_id).all()
 
-        if r.count() == 0:
+        if len(r) == 0:
             return {"ERROR" : "Version '%i' doens't exist for device '%s'." % (version, device)}
 
-        cherrypy.response.headers['Content-Type'] = "application/x-download"
-        cherrypy.response.headers['Content-Disposition'] = 'attachment; filename="%s-%i"' % ( device, version )
+        response.headers['Content-Type'] = "application/x-download"
+        response.headers['Content-Disposition'] = 'attachment; filename="%s-%i"' % ( device, version )
 
         f = open( "%s/%s" % (config.get("firmware.dir"), r[0].firmware), "r" )
 
@@ -176,12 +175,14 @@ class FwServe(object):
         if dev_id == False:
             return {"ERROR": "Device '%s' not found" % device}
 
-        r = model.FirmwareBlobs.selectBy( device = dev_id, version = version )
-        if r.count() == 0:
+        r = model.FirmwareBlobs.query.filter_by(device = dev_id, version = version).all()
+
+        if len(r) == 0:
             return {"ERROR": "Version %i does not exist" % version}
         fw = r[0]
 
-        r = model.FirmwareState.selectBy( fw_id = fw.id ).orderBy("date")
+        r = model.FirmwareState.query.filter_by(fw_id = fw.id)
+        r = r.order_by(model.FirmwareState.date).all()
         log = []
         for entry in r:
             log.append( { "time": datetime_to_stamp(entry.date),
@@ -220,8 +221,7 @@ class FwServe(object):
                    "SUPERCEDED",
                    "NONE" ]:
             state[x] = []
-
-        for fw in model.FirmwareBlobs.selectBy( device = dev_id ):
+        for fw in model.FirmwareBlobs.query.filter_by(device=dev_id).all():
             state[self.__get_state(fw.id)].append(fw.version)
 
         return state
@@ -239,8 +239,8 @@ class FwServe(object):
         if not dev_id:
             return {"ERROR": "Device '%s' not found" % device}
 
-        r = model.FirmwareBlobs.selectBy( device = dev_id, version = version )
-        if r.count() == 0:
+        r = model.FirmwareBlobs.query.filter_by(device=dev_id, version=version).all()
+        if len(r) == 0:
             return {"ERROR": "Version '%i' does not exist" % version}
         fw = r[0]
 
@@ -252,11 +252,11 @@ class FwServe(object):
         elif state != 'DEVEL':
             return {"ERROR": "Cannot resubmit for testing"}
 
-        for f in model.FirmwareBlobs.selectBy( device = dev_id ):
+        for f in model.FirmwareBlobs.query.filter_by(device = dev_id).all():
             if self.__get_state(f.id) == 'TESTING':
                 return {"ERROR": "Cannot submit more than one firmware for testing for device '%s'" % device}
 
-        for f in model.FirmwareBlobs.selectBy( device = dev_id ):
+        for f in model.FirmwareBlobs.query.filter_by(device = dev_id).all():
             if f.version < version and self.__get_state(f.id) in ['ALLOCATED','DEVEL']:
                 self.__add_state( f.id, "Superceded by version %i" % version, "SUPERCEDED")
 
@@ -272,8 +272,8 @@ class FwServe(object):
         if not dev_id:
             return {"ERROR": "Device '%s' not found" % device}
 
-        r = model.FirmwareBlobs.selectBy( device = dev_id, version = version )
-        if r.count() == 0:
+        r = model.FirmwareBlobs.query.filter_by(device = dev_id, version = version).all()
+        if len(r) == 0:
             return {"ERROR": "Version '%i' does not exist" % version}
         fw = r[0]
 
@@ -287,7 +287,7 @@ class FwServe(object):
         #convert to boolean
         result = (result == 'pass')
         #submit the result
-        model.FirmwareTesting( fw_id = fw.id,
+        firmware_result = model.FirmwareTesting( fw_id = fw.id,
                                date = datetime.datetime.now(),
                                message = message,
                                result = result )
@@ -297,11 +297,11 @@ class FwServe(object):
             tests_remaining = -1
 
         else:
-            tests_passed = model.FirmwareTesting.selectBy( fw_id = fw.id, result = True ).count()
+            tests_passed = len(model.FirmwareTesting.query.filter_by(fw_id = fw.id, result = True).all())
             tests_remaining = TEST_PASSES_TO_SHIP - tests_passed
 
             if tests_remaining == 0:
-                for f in model.FirmwareBlobs.selectBy( device = dev_id ):
+                for f in model.FirmwareBlobs.query.filter_by(device = dev_id).all():
                     if self.__get_state(f.id) == 'SHIPPING':
                         self.__add_state( f.id, "Replaced by version %i" % version, "OLD_RELEASE")
                         break
