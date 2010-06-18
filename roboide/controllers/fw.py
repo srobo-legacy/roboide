@@ -54,27 +54,27 @@ class FwServe(object):
         if len(r) > 1:
             raise "More than one device registered with the name '%s'" % device
 
-        return r[0].id
+        return r[0]
 
-    def __find_new_ver(self, device_id):
+    def __find_new_ver(self, device):
         """Find a new, unused firmware version."""
-        blobs = model.FirmwareBlobs.query.filter_by(device = device_id).all()
+        blobs = model.FirmwareBlobs.query.filter_by(device = device).all()
 
         if len(blobs) == 0:
             return 0
 
         return max([blob.version for blob in blobs]) + 1
 
-    def __add_state(self, fw_id, message, state):
+    def __add_state(self, fw, message, state):
         """Add a status change message to a firmware image"""
-        f = model.FirmwareState( fw_id = fw_id,
+        f = model.FirmwareState( firmware = fw,
                                  date = datetime.datetime.now(),
                                  message = message,
                                  state = state )
 
-    def __get_state(self, fw_id):
+    def __get_state(self, fw):
         """Get the state of the given device image."""
-        r = model.FirmwareState.query.filter_by(fw_id =  fw_id)
+        r = model.FirmwareState.query.filter_by(firmware = fw)
         r = r.order_by(model.FirmwareState.date).all()
 
         if len(r) == 0:
@@ -92,20 +92,19 @@ class FwServe(object):
         if not self.__check_rev(revision):
             return {"ERROR": "Invalid VC revision string"}
 
-        dev_id = self.__find_device(device)
-        if dev_id == False:
+        dev = self.__find_device(device)
+        if dev == False:
             return {"ERROR": "Device '%s' not found" % device}
 
-        version = self.__find_new_ver(dev_id)
+        version = self.__find_new_ver(dev)
 
-        nver = model.FirmwareBlobs( device = dev_id,
+        nver = model.FirmwareBlobs( device = dev,
                                     version = version,
                                     firmware = "JAM",
                                     revision = revision,
                                     description = desc )
 
-
-        self.__add_state( fw_id = nver.id,
+        self.__add_state( fw = nver,
                           message = "Version number allocated",
                           state = "ALLOCATED" )
 
@@ -128,7 +127,7 @@ class FwServe(object):
             return {"ERROR": "Version %i does not exist" % version}
         fw = r[0]
 
-        if self.__get_state(fw.id) != "ALLOCATED":
+        if self.__get_state(fw) != "ALLOCATED":
             return {"ERROR": "Firmware already uploaded"}
 
         data = firmware.file.read()
@@ -143,7 +142,7 @@ class FwServe(object):
         f.write( data )
         f.close()
 
-        self.__add_state( fw.id, "Firmware uploaded", "DEVEL" )
+        self.__add_state( fw, "Firmware uploaded", "DEVEL" )
 
         return { "sha1": s.hexdigest() }
 
@@ -183,7 +182,7 @@ class FwServe(object):
             return {"ERROR": "Version %i does not exist" % version}
         fw = r[0]
 
-        r = model.FirmwareState.query.filter_by(fw_id = fw.id)
+        r = model.FirmwareState.query.filter_by(firmware = fw)
         r = r.order_by(model.FirmwareState.date).all()
         log = []
         for entry in r:
@@ -209,8 +208,8 @@ class FwServe(object):
     @expose("json")
     def images(self,device):
         """Return information about the firmwares for the given device."""
-        dev_id = self.__find_device(device)
-        if not dev_id:
+        dev = self.__find_device(device)
+        if not dev:
             return {"ERROR": "Device '%s' not found" % device}
 
         state = {}
@@ -223,8 +222,8 @@ class FwServe(object):
                    "SUPERCEDED",
                    "NONE" ]:
             state[x] = []
-        for fw in model.FirmwareBlobs.query.filter_by(device=dev_id).all():
-            state[self.__get_state(fw.id)].append(fw.version)
+        for fw in model.FirmwareBlobs.query.filter_by(device=dev).all():
+            state[self.__get_state(fw)].append(fw.version)
 
         return state
 
@@ -246,7 +245,7 @@ class FwServe(object):
             return {"ERROR": "Version '%i' does not exist" % version}
         fw = r[0]
 
-        state = self.__get_state(fw.id)
+        state = self.__get_state(fw)
         if state == 'ALLOCATED':
             return {"ERROR": "Cannot submit for testing without firmware image"}
         elif state == 'TESTING':
@@ -255,14 +254,14 @@ class FwServe(object):
             return {"ERROR": "Cannot resubmit for testing"}
 
         for f in model.FirmwareBlobs.query.filter_by(device = dev_id).all():
-            if self.__get_state(f.id) == 'TESTING':
+            if self.__get_state(f) == 'TESTING':
                 return {"ERROR": "Cannot submit more than one firmware for testing for device '%s'" % device}
 
         for f in model.FirmwareBlobs.query.filter_by(device = dev_id).all():
-            if f.version < version and self.__get_state(f.id) in ['ALLOCATED','DEVEL']:
-                self.__add_state( f.id, "Superceded by version %i" % version, "SUPERCEDED")
+            if f.version < version and self.__get_state(f) in ['ALLOCATED','DEVEL']:
+                self.__add_state(f, "Superceded by version %i" % version, "SUPERCEDED")
 
-        self.__add_state( fw.id, "Submitted for Testing", "TESTING")
+        self.__add_state(fw, "Submitted for Testing", "TESTING")
 
         return { "success": True }
 
@@ -279,7 +278,7 @@ class FwServe(object):
             return {"ERROR": "Version '%i' does not exist" % version}
         fw = r[0]
 
-        state = self.__get_state(fw.id)
+        state = self.__get_state(fw)
         if state != 'TESTING':
             return {"ERROR": "Cannot submit result for firmware not currently under test"}
 
@@ -289,28 +288,28 @@ class FwServe(object):
         #convert to boolean
         result = (result == 'pass')
         #submit the result
-        firmware_result = model.FirmwareTesting( fw_id = fw.id,
+        firmware_result = model.FirmwareTesting( firmware = fw,
                                date = datetime.datetime.now(),
                                message = message,
                                result = result )
 
         if not result:
-            self.__add_state( fw.id, "Test Failure", "FAILED")
+            self.__add_state(fw, "Test Failure", "FAILED")
             tests_remaining = -1
 
         else:
-            tests_passed = len(model.FirmwareTesting.query.filter_by(fw_id = fw.id, result = True).all())
+            tests_passed = len(model.FirmwareTesting.query.filter_by(firmware = fw, result = True).all())
             tests_remaining = TEST_PASSES_TO_SHIP - tests_passed
 
             if tests_remaining == 0:
                 for f in model.FirmwareBlobs.query.filter_by(device = dev_id).all():
-                    if self.__get_state(f.id) == 'SHIPPING':
-                        self.__add_state( f.id, "Replaced by version %i" % version, "OLD_RELEASE")
+                    if self.__get_state(f) == 'SHIPPING':
+                        self.__add_state(f, "Replaced by version %i" % version, "OLD_RELEASE")
                         break
 
-                self.__add_state( fw.id, "%i tests passed -- start shipping" % TEST_PASSES_TO_SHIP, "SHIPPING")
+                self.__add_state(fw, "%i tests passed -- start shipping" % TEST_PASSES_TO_SHIP, "SHIPPING")
 
             else:
-                self.__add_state( fw.id, "%i tests passed (%i needed)" % (tests_passed,TEST_PASSES_TO_SHIP), "TESTING")
+                self.__add_state(fw, "%i tests passed (%i needed)" % (tests_passed,TEST_PASSES_TO_SHIP), "TESTING")
 
         return { "success": True, "remaining": tests_remaining }

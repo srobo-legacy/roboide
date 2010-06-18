@@ -9,8 +9,8 @@ class FirmwareTargets(Entity):
     name = Field(String(40))
 
 class FirmwareBlobs(Entity):
-    # The device (ForeignKey doesn't work in the sqlobject on button)
-    device = Field(Integer) #ForeignKey("FirmwareTargets")
+    # The device
+    device = ManyToOne("FirmwareTargets")
 
     # The version number
     version = Field(Integer)
@@ -28,8 +28,8 @@ class FirmwareBlobs(Entity):
     description = Field(UnicodeText)
 
 class FirmwareState(Entity):
-    # The firmware this relates to. (ForeignKey doesn't work in the sqlobject on button)
-    fw_id = Field(Integer) #ForeignKey("FirmwareBlobs")
+    # The firmware this relates to.
+    firmware = ManyToOne("FirmwareBlobs")
 
     # The date and time of state change
     date = Field(Date)
@@ -51,8 +51,8 @@ class FirmwareState(Entity):
             )
 
 class FirmwareTesting(Entity):
-    # The firmware this relates to. (ForeignKey doesn't work in the sqlobject on button)
-    fw_id = Field(Integer) #ForeignKey("FirmwareBlobs")
+    # The firmware this relates to.
+    firmware = ManyToOne("FirmwareBlobs")
 
     # The date and time of the test result
     date = Field(Date)
