@@ -34,6 +34,5 @@ class TestProjectFunctions(unittest.TestCase):
 
         self.connection.request("GET", "/createproj?name=%s&team=%s" % (proj, team))
         response = self.connection.getresponse()
-        print response.read()
         self.assertEqual(helpers.does_project_exist(team, proj), True, "created project did not exist")
 
