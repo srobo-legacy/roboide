@@ -25,14 +25,18 @@ class TestProjectFunctions(unittest.TestCase):
 
 
     def test_create_project(self):
-        proj = 'new-project'
-        team = 1
-        self.connection.request("GET", "/projlist?team=%s" % team)
-        r = self.connection.getresponse().read()
-        p = json.loads(r)['projects']
-        self.assertEqual(p, [], "projects present before first creation")
+        projects = 'new-project','potatoes'
+        teams = [1,2]
 
-        self.connection.request("GET", "/createproj?name=%s&team=%s" % (proj, team))
-        response = self.connection.getresponse()
-        self.assertEqual(helpers.does_project_exist(team, proj), True, "created project did not exist")
+        for team in teams:
+            self.connection.request("GET", "/projlist?team=%s" % team)
+            r = self.connection.getresponse().read()
+            p = json.loads(r)['projects']
+            self.assertEqual(p, [], "projects present before first creation")
+
+        for proj in projects:
+            for team in teams:
+                self.connection.request("GET", "/createproj?name=%s&team=%s" % (proj, team))
+                response = self.connection.getresponse()
+                self.assertEqual(helpers.does_project_exist(team, proj), True, "created project did not exist")
 
