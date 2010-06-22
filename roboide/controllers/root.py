@@ -3,7 +3,7 @@
 from roboide.lib.base import BaseController
 from tg import config, expose, response
 from roboide import model
-from sqlobject import sqlbuilder
+from sqlalchemy import desc
 from paste.deploy.converters import asbool
 
 # Standard library imports
@@ -909,7 +909,7 @@ class RootController(BaseController):
                     "present" : 0}
 
         try:
-            team = model.TeamNames.get(id=team)
+            team = model.TeamNames.get_by(id=team)
         except:
             #Fake team!
             log.debug("Team not found")
@@ -919,22 +919,21 @@ class RootController(BaseController):
 
 
         try:
-            present = model.RoboPresent.selectBy(team=team)[0].present
+            present = model.RoboPresent.query.filter_by(team=team).first().present
         except:
             present = False
 
         most_recent_ping = 0
         most_recent_ping_date = None
 
-        robologs = model.RoboLogs.selectBy(team=team)
-        robologs = robologs.orderBy(sqlbuilder.DESC(model.RoboLogs.q.id))
-        most_recent_ping = robologs[0].id
+        robologs = model.RoboLogs.query.filter_by(team=team)
+        robologs = robologs.order_by(desc(model.RoboLogs.id))
+        most_recent_ping = robologs.first().id
 
         log.debug("Robot presence is: %d" % present)
 
         last_received_ping = int(last_received_ping)
-        logs = model.RoboLogs.select(sqlbuilder.AND(model.RoboLogs.q.team == team,
-                                         model.RoboLogs.q.id > last_received_ping))
+        logs = robologs.filter_by(id > last_received_ping).all()
 
         data = "\n".join([l.value for l in logs])
 
