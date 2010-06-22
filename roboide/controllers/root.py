@@ -927,6 +927,13 @@ class RootController(BaseController):
         most_recent_ping_date = None
 
         robologs = model.RoboLogs.query.filter_by(team=team)
+
+        if robologs.count() == 0:
+            log.debug("No robologs found")
+            return {"ping" : 0,
+                    "data" : "",
+                    "present" : int(present)}
+
         robologs = robologs.order_by(desc(model.RoboLogs.id))
         most_recent_ping = robologs.first().id
 
