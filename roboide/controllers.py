@@ -920,7 +920,6 @@ class Root(controllers.RootController):
 
         log.debug("Robot presence is: %d" % present)
 
-        last_received_ping = int(last_received_ping)
         logs = model.RoboLogs.select(sqlbuilder.AND(model.RoboLogs.q.team == team,
                                          model.RoboLogs.q.id > last_received_ping))
 
