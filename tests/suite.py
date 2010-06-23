@@ -9,6 +9,7 @@ sys.path.append(__file__[0:slice_end+1]+"../")
 from turbogears import update_config, config
 
 # Standard imports
+import subprocess
 import unittest
 import httplib, socket, time
 
@@ -29,6 +30,11 @@ if __name__ == "__main__":
     else:
         sys.exit('No config file specified')
 
+    ide_run_cmd = './start-roboide.py'
+    run_proc = subprocess.Popen([ide_run_cmd, sys.argv[1]],
+                                stdout = subprocess.PIPE,
+                                stderr = subprocess.PIPE)
+
     #check that the IDE is running
     port =  config.get('server.socket_port')
     host =  config.get('server.socket_host')
@@ -39,7 +45,7 @@ if __name__ == "__main__":
             conn.connect()
             done = True
         except socket.error:
-            print 'Connection refused on %s:%s. Is the IDE running?' % (host, port)
+            print 'Connection refused on %s:%s. Waiting for the IDE to start.' % (host, port)
             print 'Retrying connection.'
             time.sleep(2)
     conn.close()
@@ -47,3 +53,5 @@ if __name__ == "__main__":
     #Run the tests
     unittest.TextTestRunner(verbosity=2).run(suite)
 
+    # Kill the IDE process.
+    run_proc.terminate()
