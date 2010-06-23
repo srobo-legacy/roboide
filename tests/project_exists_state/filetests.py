@@ -14,6 +14,9 @@ import roboide.vcs_bzr as vcs_bzr
 import roboide.user as users
 
 class TestEmptyProjectFunctions(unittest.TestCase):
+    """
+    Test an empty project.
+    """
 
     def setUp(self):
         self.project_name = "testing-project"
@@ -42,6 +45,12 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         os.system("rm -rf %s/*" % (users.get_repopath(self.team).replace('file:///','/')))
 
     def test_create_files(self):
+        """
+        Test the creation of files.
+
+        This test attmpts to create a collection of files in a project,
+        and asserts their creation.
+        """
         files = ["robot.py", "cows", "other.py"]
 
         #nb: this constant might need to be changed if the rcs in use ever changes

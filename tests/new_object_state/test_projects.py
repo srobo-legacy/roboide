@@ -13,6 +13,9 @@ from turbogears import config
 from roboide.user import get_repopath
 
 class TestProjectFunctions(unittest.TestCase):
+    """
+    Test an empty repo.
+    """
     def setUp(self):
         port =  config.get('server.socket_port')
         host =  config.get('server.socket_host')
@@ -25,6 +28,11 @@ class TestProjectFunctions(unittest.TestCase):
 
 
     def test_create_project(self):
+        """
+        Test the creation of projects.
+
+        This test attmpts to create a project, and assert this creation.
+        """
         projects = 'new-project','potatoes'
         teams = [1,2]
 
