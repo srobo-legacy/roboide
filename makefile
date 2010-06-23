@@ -34,8 +34,8 @@ clean-pyc:
 TEST_REPOS = test-repos/1 test-repos/2
 RELOAD_SWAP = s/^autoreload\.on.*=.*True.*/autoreload.on=False/
 REPO_SWAP = s/s\\/repos\\/TEAM/s\\/test-repos\\/TEAM/
-PORT_SWAP = s/socket_port=8080/socket_port=12345/
-DB_SWAP = s/devdata.sqlite/testdata.sqlite/
+PORT_SWAP = s/socket_port.*=.*8080.*/socket_port=12345/
+DB_SWAP = s/devdata\.sqlite/testdata.sqlite/
 
 .PHONY: test test-run test-bzr-repos test-clean
 
