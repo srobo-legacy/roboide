@@ -55,3 +55,4 @@ if __name__ == "__main__":
 
     # Kill the IDE process.
     run_proc.terminate()
+    run_proc.wait()
