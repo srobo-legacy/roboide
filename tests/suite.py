@@ -10,10 +10,12 @@ from turbogears import update_config, config
 
 # Standard imports
 import unittest
+import httplib, socket, time
+
+# Test related imports
 import empty_state
 import new_object_state
 import project_exists_state
-import httplib, socket, time
 
 suite = unittest.TestSuite()
 suite.addTests(unittest.TestLoader().loadTestsFromModule(empty_state))
