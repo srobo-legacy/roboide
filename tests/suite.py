@@ -12,11 +12,13 @@ from turbogears import update_config, config
 import unittest
 import empty_state
 import new_object_state
+import project_exists_state
 import httplib, socket, time
 
 suite = unittest.TestSuite()
 suite.addTests(unittest.TestLoader().loadTestsFromModule(empty_state))
 suite.addTests(unittest.TestLoader().loadTestsFromModule(new_object_state))
+suite.addTests(unittest.TestLoader().loadTestsFromModule(project_exists_state))
 
 if __name__ == "__main__":
     #grab the config file
