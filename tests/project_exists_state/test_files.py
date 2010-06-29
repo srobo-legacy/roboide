@@ -131,3 +131,15 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         """
         files = ["robot.py", "cows", "other.py"]
         self.asserted_create_files(files)
+
+    def test_create_delete_files(self):
+        """
+        tests the creation and gradual deletion of a bunch of files
+
+        note: no robot.py is created in this test
+        """
+
+        files = ["cows.py", "cheese", "monkeys.py"]
+        self.asserted_create_files(files)
+        for file in files:
+            self.asserted_delete_file(file)
