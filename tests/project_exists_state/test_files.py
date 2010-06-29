@@ -141,5 +141,7 @@ class TestEmptyProjectFunctions(unittest.TestCase):
 
         files = ["cows.py", "cheese", "monkeys.py"]
         self.asserted_create_files(files)
-        for file in files:
-            self.asserted_delete_file(file)
+        for i in range(0, len(files)):
+            self.asserted_delete_file(files[i])
+            for remaining_file in files[i+1:]:
+                self.assertFileExistsInProject(remaining_file)
