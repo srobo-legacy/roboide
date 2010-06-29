@@ -44,6 +44,28 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         #delete the repo
         os.system("rm -rf %s/*" % (users.get_repopath(self.team).replace('file:///','/')))
 
+    def get_create_file_endpoint(self, filename, filecontent, rev):
+        """
+        makes a request to the create file endpoint
+        """
+
+        params = urllib.urlencode({"code":filecontent})
+        headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+
+        self.connection.request(
+            "POST",
+            "/savefile?team=%d&filepath=%s&rev=%d&message=%s" % (
+                self.team,
+                urllib.quote("/"+self.project_name+"/"+filename),
+                rev,
+                urllib.quote("testing message")
+            ),
+            params,
+            headers
+        )
+
+        return self.connection.getresponse()
+
     def test_create_files(self):
         """
         Test the creation of files.
@@ -57,23 +79,7 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         rev = 0
 
         for file in files:
-            params = urllib.urlencode({"code":"empty"})
-            headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
-
-            self.connection.request(
-
-                "POST",
-                "/savefile?team=%d&filepath=%s&rev=%d&message=%s" % (
-                    self.team,
-                    urllib.quote("/"+self.project_name+"/"+file),
-                    rev,
-                    urllib.quote("testing message")
-                ),
-                params,
-                headers
-            )
-
-            response = self.connection.getresponse()
+            response = self.get_create_file_endpoint(file, "empty", rev)
             self.assertEqual(response.status, 200, "response code was not 200")
             rev += 1
             self.assertEqual(helpers.file_exists_in_project(file, self.team, self.project_name), True, "created file does not exist")
