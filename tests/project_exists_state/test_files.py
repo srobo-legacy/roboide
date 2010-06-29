@@ -66,6 +66,18 @@ class TestEmptyProjectFunctions(unittest.TestCase):
 
         return self.connection.getresponse()
 
+    def assertResponseCode200(self, code):
+        """
+        asserts that the passed response code is equal to 200
+        """
+        self.assertEqual(code, 200, "response code was not 200")
+
+    def assertFileExistsInProject(self, filename):
+        """
+        asserts that the file exists in the project represented by this test
+        """
+        self.assertEqual(helpers.file_exists_in_project(filename, self.team, self.project_name), True, "created file does not exist")
+
     def test_create_files(self):
         """
         Test the creation of files.
@@ -80,6 +92,6 @@ class TestEmptyProjectFunctions(unittest.TestCase):
 
         for file in files:
             response = self.get_create_file_endpoint(file, "empty", rev)
-            self.assertEqual(response.status, 200, "response code was not 200")
+            self.assertResponseCode200(response.status)
             rev += 1
-            self.assertEqual(helpers.file_exists_in_project(file, self.team, self.project_name), True, "created file does not exist")
+            self.assertFileExistsInProject(file)
