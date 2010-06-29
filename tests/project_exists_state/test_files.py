@@ -78,14 +78,11 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         """
         self.assertEqual(helpers.file_exists_in_project(filename, self.team, self.project_name), True, "created file does not exist")
 
-    def test_create_files(self):
+    def asserted_create_files(self, files):
         """
-        Test the creation of files.
-
-        This test attmpts to create a collection of files in a project,
-        and asserts their creation.
+        creates files with the filenames passed in the files list, asserting
+        that they were created successfully
         """
-        files = ["robot.py", "cows", "other.py"]
 
         #nb: this constant might need to be changed if the rcs in use ever changes
         rev = 0
@@ -95,3 +92,13 @@ class TestEmptyProjectFunctions(unittest.TestCase):
             self.assertResponseCode200(response.status)
             rev += 1
             self.assertFileExistsInProject(file)
+
+    def test_create_files(self):
+        """
+        Test the creation of files.
+
+        This test attmpts to create a collection of files in a project,
+        and asserts their creation.
+        """
+        files = ["robot.py", "cows", "other.py"]
+        self.asserted_create_files(files)
