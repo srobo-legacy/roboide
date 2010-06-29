@@ -66,6 +66,22 @@ class TestEmptyProjectFunctions(unittest.TestCase):
 
         return self.connection.getresponse()
 
+    def get_delete_file_endpoint(self, filename):
+        """
+        makes a request to the delete file endpoint
+        """
+        self.connection.request(
+            "GET",
+            "/delete?team=%d&project=%s&files=%s&kind=ALL" %
+            (
+                self.team,
+                urllib.quote(self.project_name),
+                urllib.quote(filename)
+            )
+        )
+
+        response = self.connection.getresponse()
+
     def assertResponseCode200(self, code):
         """
         asserts that the passed response code is equal to 200
@@ -77,6 +93,12 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         asserts that the file exists in the project represented by this test
         """
         self.assertEqual(helpers.file_exists_in_project(filename, self.team, self.project_name), True, "created file does not exist")
+
+    def assertFileDoesNotExistInProject(self, filename):
+        """
+        asserts that a file does not exist in the project represented by this test
+        """
+        self.assertEqual(helpers.file_exists_in_project(filename, self.team, self.project_name), False, "deleted file exists")
 
     def asserted_create_files(self, files):
         """
@@ -92,6 +114,13 @@ class TestEmptyProjectFunctions(unittest.TestCase):
             self.assertResponseCode200(response.status)
             rev += 1
             self.assertFileExistsInProject(file)
+
+    def asserted_delete_file(self, filename):
+        """
+        deletes a file and asserts it has been deleted
+        """
+        self.get_delete_file_endpoint(filename)
+        self.assertFileDoesNotExistInProject(filename)
 
     def test_create_files(self):
         """
