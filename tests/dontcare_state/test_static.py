@@ -32,3 +32,8 @@ class StaticFilesTest(unittest.TestCase):
                 self.connection.request("GET", file)
                 response = self.connection.getresponse()
                 self.assertEqual(response.status, 200, "response code on static file was not 200")
+
+    def test_static_home_page(self):
+        self.connection.request("GET", "/")
+        response = self.connection.getresponse()
+        self.assertEqual(response.status, 200, "response code on home page was not 200")
