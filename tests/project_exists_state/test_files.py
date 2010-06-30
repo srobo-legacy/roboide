@@ -50,9 +50,11 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         #reset revision back to 0
         self.rev = 0
 
-    def get_create_file_endpoint(self, filename, filecontent, rev):
+    def get_save_file_endpoint(self, filename, filecontent, rev):
         """
-        makes a request to the create file endpoint
+        makes a request to the save file endpoint
+
+        will create a file if it does not already exist
         """
 
         params = urllib.urlencode({"code":filecontent})
@@ -115,7 +117,7 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         """
 
         self.assertFileDoesNotExistInProject(filename)
-        response = self.get_create_file_endpoint(filename, contents, self.rev)
+        response = self.get_save_file_endpoint(filename, contents, self.rev)
         self.rev += 1
         self.assertFileExistsInProject(filename)
         self.assertResponseCode200(response.status)
