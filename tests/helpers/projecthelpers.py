@@ -36,6 +36,7 @@ def file_exists_in_project(file, team, project):
     Return whether or not a file exists in a project.
     """
     checkout_path = "/tmp/repo"
+    subprocess.call(["rm", "-rf", checkout_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     checkout_repository(team, project, checkout_path)
 
     result = os.path.isfile(checkout_path + os.path.sep + file)
