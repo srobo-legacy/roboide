@@ -17,6 +17,9 @@ class StaticFilesTest(unittest.TestCase):
         os.path.walk("roboide/static/", self.buildfiles, "")
 
     def buildfiles(self, arg, path, names):
+        """
+        build the list of static files
+        """
         for name in names:
             path = path.replace("roboide", "")
             if path[-1] != os.path.sep:
@@ -27,6 +30,10 @@ class StaticFilesTest(unittest.TestCase):
         self.connection.close()
 
     def test_static_files(self):
+        """
+        tests the presence of static files, based on the list built up
+        from /roboide/static
+        """
         for file in self.files:
             if file.find(".") != -1:
                 self.connection.request("GET", file)
@@ -34,6 +41,9 @@ class StaticFilesTest(unittest.TestCase):
                 self.assertEqual(response.status, 200, "response code on static file was not 200")
 
     def test_static_home_page(self):
+        """
+        tests that the homepage is available
+        """
         self.connection.request("GET", "/")
         response = self.connection.getresponse()
         self.assertEqual(response.status, 200, "response code on home page was not 200")
