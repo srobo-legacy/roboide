@@ -18,6 +18,19 @@ class TestEmptyProjectFunctions(ProjectCreatingTestCase):
     """
     Test an empty project.
     """
+    def test_empty_file_list(self):
+        """
+        test that the freshly commited project is empty
+        """
+        helpers.checkout_repository(self.team, self.project_name, "/tmp/repo")
+        files = os.listdir("/tmp/repo")
+        visible_files = []
+
+        for file in files:
+            if file[0] != '.':
+                visible_files.append(file)
+
+        self.assertEqual(visible_files, [], "files were in the repo")
 
     def test_create_files(self):
         """
