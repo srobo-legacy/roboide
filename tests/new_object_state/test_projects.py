@@ -17,8 +17,8 @@ class TestProjectFunctions(unittest.TestCase):
     Test an empty repo.
     """
     def setUp(self):
-        port =  config.get('server.socket_port')
-        host =  config.get('server.socket_host')
+        port = config.get('server.socket_port')
+        host = config.get('server.socket_host')
         self.connection = httplib.HTTPConnection(host, port)
 
     def tearDown(self):
