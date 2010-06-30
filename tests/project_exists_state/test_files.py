@@ -37,12 +37,18 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         self.connection.request("GET", "/projlist?team=%s" % self.team)
         self.connection.getresponse()
 
+        #handle revision at the class level
+        self.rev = 0
+
     def tearDown(self):
         #undo the http connection
         self.connection.close()
 
         #delete the repo
         os.system("rm -rf %s/*" % (users.get_repopath(self.team).replace('file:///','/')))
+
+        #reset revision back to 0
+        self.rev = 0
 
     def get_create_file_endpoint(self, filename, filecontent, rev):
         """
@@ -100,6 +106,20 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         """
         self.assertEqual(helpers.file_exists_in_project(filename, self.team, self.project_name), False, "deleted file exists")
 
+    def asserted_create_file(self, filename, contents):
+        """
+        creates a file whilst making assertions
+
+        pre-asserts the file doesn't exist, post asserts that the file exists
+        and that the response code from the http server was 200
+        """
+
+        self.assertFileDoesNotExistInProject(filename)
+        response = self.get_create_file_endpoint(filename, contents, self.rev)
+        self.rev += 1
+        self.assertFileExistsInProject(filename)
+        self.assertResponseCode200(response.status)
+
     def asserted_create_files(self, files):
         """
         creates files with the filenames passed in the files list, asserting
@@ -110,10 +130,7 @@ class TestEmptyProjectFunctions(unittest.TestCase):
         rev = 0
 
         for file in files:
-            response = self.get_create_file_endpoint(file, "empty", rev)
-            self.assertResponseCode200(response.status)
-            rev += 1
-            self.assertFileExistsInProject(file)
+            self.asserted_create_file(file, "empty")
 
     def asserted_delete_file(self, filename):
         """
