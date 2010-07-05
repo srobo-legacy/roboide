@@ -51,7 +51,7 @@ class ProjectCreatingTestCase(unittest.TestCase):
 
     def get_save_file_endpoint(self, filename, filecontent, rev):
         """
-        makes a request to the save file endpoint
+        Makes a request to the save file endpoint.
 
         will create a file if it does not already exist
         """
@@ -75,8 +75,9 @@ class ProjectCreatingTestCase(unittest.TestCase):
 
     def get_delete_file_endpoint(self, filename):
         """
-        makes a request to the delete file endpoint
+        Makes a request to the delete file endpoint.
         """
+
         self.connection.request(
             "GET",
             "/delete?team=%d&project=%s&files=%s&kind=ALL" %
@@ -91,25 +92,28 @@ class ProjectCreatingTestCase(unittest.TestCase):
 
     def assertResponseCode200(self, code):
         """
-        asserts that the passed response code is equal to 200
+        Asserts that the passed response code is equal to 200.
         """
+
         self.assertEqual(code, 200, "response code was not 200")
 
     def assertFileExistsInProject(self, filename):
         """
-        asserts that the file exists in the project represented by this test
+        Asserts that the file exists in the project represented by this test.
         """
+
         self.assertEqual(helpers.file_exists_in_project(filename, self.team, self.project_name), True, "created file does not exist")
 
     def assertFileDoesNotExistInProject(self, filename):
         """
-        asserts that a file does not exist in the project represented by this test
+        Asserts that a file does not exist in the project represented by this test.
         """
+
         self.assertEqual(helpers.file_exists_in_project(filename, self.team, self.project_name), False, "deleted file exists")
 
     def asserted_create_file(self, filename, contents):
         """
-        creates a file whilst making assertions
+        Creates a file whilst making assertions.
 
         pre-asserts the file doesn't exist, post asserts that the file exists
         and that the response code from the http server was 200
@@ -123,8 +127,8 @@ class ProjectCreatingTestCase(unittest.TestCase):
 
     def asserted_create_files(self, files):
         """
-        creates files with the filenames passed in the files list, asserting
-        that they were created successfully
+        Creates files with the filenames passed in the files list, asserting
+        that they were created successfully.
         """
 
         #nb: this constant might need to be changed if the rcs in use ever changes
@@ -135,8 +139,9 @@ class ProjectCreatingTestCase(unittest.TestCase):
 
     def asserted_delete_file(self, filename):
         """
-        deletes a file and asserts it has been deleted
+        Deletes a file and asserts it has been deleted
         """
+
         self.get_delete_file_endpoint(filename)
         self.assertFileDoesNotExistInProject(filename)
 
