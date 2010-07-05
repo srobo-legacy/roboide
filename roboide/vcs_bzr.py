@@ -6,6 +6,10 @@ import tempfile
 class ProjectWrite():
     """
     A class for making modifications to the project, ie those ending in a commit.
+
+    call self._update_tree() whenever you make modifications to the TransPrev
+    object, or the state of this will be massively broken
+
     """
     def __init__(self, team, project, revid=None, revno=None):
         """
@@ -216,8 +220,6 @@ class ProjectWrite():
 
             self.TransPrev.new_file(file_name, parent_trans_id, contents, file_id)
 
-            self._update_tree() # update PrevTree to reflect new file
-
         else:
             trans_id = self.TransPrev.trans_id_file_id(file_id)
 
@@ -227,6 +229,7 @@ class ProjectWrite():
             # add new contents
             self.TransPrev.create_file(contents, trans_id)
 
+        self._update_tree() # update PrevTree to reflect new file
         return
 
     def copy(self, from_path, to_path):
