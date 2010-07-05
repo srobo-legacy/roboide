@@ -21,7 +21,7 @@ class TestEmptyProjectFunctions(ProjectCreatingTestCase):
 
     def test_empty_file_list(self):
         """
-        test that the freshly commited project is empty
+        Test that the freshly commited project is empty.
         """
 
         helpers.checkout_repository(self.team, self.project_name, "/tmp/repo")
@@ -47,7 +47,7 @@ class TestEmptyProjectFunctions(ProjectCreatingTestCase):
 
     def test_create_delete_files(self):
         """
-        tests the creation and gradual deletion of a bunch of files
+        Tests the creation and gradual deletion of a bunch of files.
 
         note: no robot.py is created in this test
         """
@@ -61,7 +61,7 @@ class TestEmptyProjectFunctions(ProjectCreatingTestCase):
 
     def test_create_modify_files(self):
         """
-        tests the creation of a file with some content and modifying it
+        Tests the creation of a file with some content and modifying it.
         """
 
         files = ["robot.py", "bees.py", "cows"]
