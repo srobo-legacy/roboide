@@ -50,7 +50,7 @@ def file_exists_in_project(file, team, project):
 
 def get_file_contents(file, team, project):
     """
-    get the file contents from a repo/branch
+    Get the file contents from a repo/branch.
     """
 
     checkout_path = "/tmp/repo"
