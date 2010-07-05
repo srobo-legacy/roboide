@@ -42,3 +42,13 @@ def file_exists_in_project(file, team, project):
     result = os.path.isfile(checkout_path + os.path.sep + file)
     subprocess.call(["rm", "-rf", checkout_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return result
+
+def get_file_contents(file, team, project):
+    """
+    get the file contents from a repo/branch
+    """
+    checkout_path = "/tmp/repo"
+    checkout_repository(team, project, checkout_path)
+    file_handle = open(checkout_path + os.path.sep + file)
+    subprocess.call(["rm", "-rf", checkout_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return file_handle.read()
