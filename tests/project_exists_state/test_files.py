@@ -55,3 +55,18 @@ class TestEmptyProjectFunctions(ProjectCreatingTestCase):
             self.asserted_delete_file(files[i])
             for remaining_file in files[i+1:]:
                 self.assertFileExistsInProject(remaining_file)
+
+    def test_create_modify_files(self):
+        """
+        tests the creation of a file with some content and modifying it
+        """
+
+        files = ["robot.py", "bees.py", "cows"]
+        self.asserted_create_files(files)
+        iterations = ["massive amounts of ponies", "cheese", "bacons"]
+        for iteration in iterations:
+            for file in files:
+                response = self.get_save_file_endpoint(file, iteration, self.rev)
+                self.rev += 1
+                actual_file_contents = helpers.get_file_contents(file, self.team, self.project_name)
+                self.assertEqual(actual_file_contents, iteration, "file did not match expected contents \"%s\" actual contents were \"%s\"" % (iteration, actual_file_contents))
