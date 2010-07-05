@@ -186,7 +186,6 @@ class ProjectWrite():
 
         return self.PrevTree.path2id(path)
 
-
     def update_file_contents(self, path, contents, create=True):
         """
         Replace the contents of a file.
