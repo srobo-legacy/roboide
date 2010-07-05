@@ -9,6 +9,7 @@ def get_team_dictionary():
     """
     Return a dict of teams that the user is in.
     """
+
     teams = {}
     groups = config.get("user.default_groups")
     my_teams = [int(group[4:]) for group in groups if group[:4] == "team"]

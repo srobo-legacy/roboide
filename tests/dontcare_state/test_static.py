@@ -9,6 +9,7 @@ class StaticFilesTest(unittest.TestCase):
     """
     tests that static files are available
     """
+
     def setUp(self):
         port = config.get('server.socket_port')
         host = config.get('server.socket_host')
@@ -20,6 +21,7 @@ class StaticFilesTest(unittest.TestCase):
         """
         build the list of static files
         """
+
         for name in names:
             path = path.replace("roboide", "")
             if path[-1] != os.path.sep:
@@ -34,6 +36,7 @@ class StaticFilesTest(unittest.TestCase):
         tests the presence of static files, based on the list built up
         from /roboide/static
         """
+
         for file in self.files:
             if file.find(".") != -1:
                 self.connection.request("GET", file)
@@ -44,6 +47,7 @@ class StaticFilesTest(unittest.TestCase):
         """
         tests that the homepage is available
         """
+
         self.connection.request("GET", "/")
         response = self.connection.getresponse()
         self.assertEqual(response.status, 200, "response code on home page was not 200")

@@ -18,10 +18,12 @@ class TestEmptyProjectFunctions(ProjectCreatingTestCase):
     """
     Test an empty project.
     """
+
     def test_empty_file_list(self):
         """
         test that the freshly commited project is empty
         """
+
         helpers.checkout_repository(self.team, self.project_name, "/tmp/repo")
         files = os.listdir("/tmp/repo")
         visible_files = []
@@ -39,6 +41,7 @@ class TestEmptyProjectFunctions(ProjectCreatingTestCase):
         This test attmpts to create a collection of files in a project,
         and asserts their creation.
         """
+
         files = ["robot.py", "cows", "other.py"]
         self.asserted_create_files(files)
 

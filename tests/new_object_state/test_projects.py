@@ -16,6 +16,7 @@ class TestProjectFunctions(unittest.TestCase):
     """
     Test an empty repo.
     """
+
     def setUp(self):
         port = config.get('server.socket_port')
         host = config.get('server.socket_host')
@@ -33,6 +34,7 @@ class TestProjectFunctions(unittest.TestCase):
 
         This test attmpts to create a project, and assert this creation.
         """
+
         projects = 'new-project','potatoes'
         teams = [1,2]
 

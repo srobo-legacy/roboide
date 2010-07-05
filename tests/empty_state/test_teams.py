@@ -28,6 +28,7 @@ class TestTeamFunctions(unittest.TestCase):
         This test attmpts to get information about the current user and
         asserts that the info returned matches the expected values.
         """
+
         self.connection.request("GET", "/user/info")
         response = self.connection.getresponse()
         response_object = json.loads(response.read())
