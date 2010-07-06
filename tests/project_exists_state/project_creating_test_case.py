@@ -14,7 +14,7 @@ import roboide.user as users
 
 class ProjectCreatingTestCase(unittest.TestCase):
     def setUp(self):
-        self.project_name = "testning-project"
+        self.project_name = "testing-project"
         self.team = 1
         #open the team repo
         self.repo_handle = vcs_bzr.open_repo(self.team)
