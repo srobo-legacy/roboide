@@ -49,7 +49,7 @@ class ProjectCreatingTestCase(unittest.TestCase):
         #reset revision back to 0
         self.rev = 0
 
-    def get_save_file_endpoint(self, filename, filecontent, rev):
+    def get_save_file_endpoint(self, filename, filecontent, rev, commit_message="testing message"):
         """
         Makes a request to the save file endpoint.
 
@@ -65,7 +65,7 @@ class ProjectCreatingTestCase(unittest.TestCase):
                 self.team,
                 urllib.quote("/"+self.project_name+"/"+filename),
                 rev,
-                urllib.quote("testing message")
+                urllib.quote(commit_message)
             ),
             params,
             headers
