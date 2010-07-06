@@ -111,7 +111,7 @@ class ProjectCreatingTestCase(unittest.TestCase):
 
         self.assertEqual(helpers.file_exists_in_project(filename, self.team, self.project_name), False, "deleted file exists")
 
-    def asserted_create_file(self, filename, contents):
+    def asserted_create_file(self, filename, contents, message="testing create"):
         """
         Creates a file whilst making assertions.
 
@@ -120,12 +120,12 @@ class ProjectCreatingTestCase(unittest.TestCase):
         """
 
         self.assertFileDoesNotExistInProject(filename)
-        response = self.get_save_file_endpoint(filename, contents, self.rev)
+        response = self.get_save_file_endpoint(filename, contents, self.rev, message)
         self.rev += 1
         self.assertFileExistsInProject(filename)
         self.assertResponseCode200(response.status)
 
-    def asserted_modify_file(self, filename, contents):
+    def asserted_modify_file(self, filename, contents, message="testing modify"):
         """
         Modify a file whilst making assertions.
 
@@ -134,7 +134,7 @@ class ProjectCreatingTestCase(unittest.TestCase):
         """
 
         self.assertFileExistsInProject(filename)
-        response = self.get_save_file_endpoint(filename, contents, self.rev)
+        response = self.get_save_file_endpoint(filename, contents, self.rev, message)
         self.rev += 1
         actual_file_contents = helpers.get_file_contents(filename, self.team, self.project_name)
         self.assertEqual(actual_file_contents,
