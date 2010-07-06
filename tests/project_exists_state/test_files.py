@@ -63,7 +63,4 @@ class TestEmptyProjectFunctions(ProjectCreatingTestCase):
         iterations = ["massive amounts of ponies", "cheese", "bacons"]
         for iteration in iterations:
             for file in files:
-                response = self.get_save_file_endpoint(file, iteration, self.rev)
-                self.rev += 1
-                actual_file_contents = helpers.get_file_contents(file, self.team, self.project_name)
-                self.assertEqual(actual_file_contents, iteration, "file did not match expected contents \"%s\" actual contents were \"%s\"" % (iteration, actual_file_contents))
+                self.asserted_modify_file(file, iteration)

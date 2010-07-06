@@ -125,6 +125,23 @@ class ProjectCreatingTestCase(unittest.TestCase):
         self.assertFileExistsInProject(filename)
         self.assertResponseCode200(response.status)
 
+    def asserted_modify_file(self, filename, contents):
+        """
+        Modify a file whilst making assertions.
+
+        pre-asserts the file exists, post asserts that the file has the new content
+        and that the response code from the http server was 200
+        """
+
+        self.assertFileExistsInProject(filename)
+        response = self.get_save_file_endpoint(filename, contents, self.rev)
+        self.rev += 1
+        actual_file_contents = helpers.get_file_contents(filename, self.team, self.project_name)
+        self.assertEqual(actual_file_contents,
+                         contents,
+                         "file did not match expected contents \"%s\" actual contents were \"%s\"" % (contents, actual_file_contents))
+        self.assertResponseCode200(response.status)
+
     def asserted_create_files(self, files):
         """
         Creates files with the filenames passed in the files list, asserting
