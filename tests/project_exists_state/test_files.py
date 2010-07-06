@@ -1,16 +1,10 @@
 # Standard imports
-import unittest
-import httplib
-import json
 import os
-import urllib
 
 # TG imports
 from turbogears import config
 
 # Test imports
-import roboide.vcs_bzr as vcs_bzr
-import roboide.user as users
 import helpers
 from tests.project_creating_test_case import ProjectCreatingTestCase
 
