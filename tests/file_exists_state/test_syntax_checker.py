@@ -26,34 +26,28 @@ class TestSyntaxChecker(FileAndProjectCreatingTestCase):
         self.assertResponseCode200(code)
         self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
 
+    def asserted_valid_file(self, syntax_file_name):
+        self.projWrite = bzr.ProjectWrite(self.team, self.project_name, revno=self.rev)
+        self.projWrite.update_file_contents("robot.py", open(syntax_file_name).read())
+        self.projWrite.commit("update")
+        code, dictionary = self.get_check_syntax_endpoint("robot.py")
+        self.assertResponseCode200(code)
+        self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
+
+
     def test_control_flow_statements_syntax(self):
         """
         Verifies control statements (if, else, elif) with the syntax checker.
         """
 
-        self.projWrite = bzr.ProjectWrite(self.team, self.project_name, revno=self.rev)
-        self.projWrite.update_file_contents("robot.py", open(self.test_files[0]).read())
-        self.projWrite.commit("generate stuff")
-        code, dictionary = self.get_check_syntax_endpoint("robot.py")
-        self.assertResponseCode200(code)
-        self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
+        self.asserted_valid_file(self.test_files[0])
 
     def test_loop_statements_syntax(self):
         """
         Verifies loop statements (for, while) with the syntax checker.
         """
 
-        self.projWrite = bzr.ProjectWrite(self.team, self.project_name, revno=self.rev)
-        self.projWrite.update_file_contents("robot.py", open(self.test_files[1]).read())
-        self.projWrite.commit("more tests")
-        code, dictionary = self.get_check_syntax_endpoint("robot.py")
-        self.assertResponseCode200(code)
-        self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
+        self.asserted_valid_file(self.test_files[1])
 
     def test_sr_stuff_syntax(self):
-        self.projWrite = bzr.ProjectWrite(self.team, self.project_name, revno=self.rev)
-        self.projWrite.update_file_contents("robot.py", open(self.test_files[2]).read())
-        self.projWrite.commit("more tests")
-        code, dictionary = self.get_check_syntax_endpoint("robot.py")
-        self.assertResponseCode200(code)
-        self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
+        self.asserted_valid_file(self.test_files[1])
