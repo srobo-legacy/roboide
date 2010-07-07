@@ -4,7 +4,7 @@ import time
 import roboide.vcs_bzr as bzr
 
 class TestSyntaxChecker(FileAndProjectCreatingTestCase):
-    test_files = ["tests/resources/syntax/1.py", "tests/resources/syntax/2.py"]
+    test_files = ["tests/resources/syntax/1.py", "tests/resources/syntax/2.py", "tests/resources/syntax/3.py"]
 
     def get_check_syntax_endpoint(self, filename):
         self.connection.request("GET", "/checkcode?team=%d&path=%s&date=%d" % (
@@ -45,6 +45,14 @@ class TestSyntaxChecker(FileAndProjectCreatingTestCase):
 
         self.projWrite = bzr.ProjectWrite(self.team, self.project_name, revno=self.rev)
         self.projWrite.update_file_contents("robot.py", open(self.test_files[1]).read())
+        self.projWrite.commit("more tests")
+        code, dictionary = self.get_check_syntax_endpoint("robot.py")
+        self.assertResponseCode200(code)
+        self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
+
+    def test_sr_stuff_syntax(self):
+        self.projWrite = bzr.ProjectWrite(self.team, self.project_name, revno=self.rev)
+        self.projWrite.update_file_contents("robot.py", open(self.test_files[2]).read())
         self.projWrite.commit("more tests")
         code, dictionary = self.get_check_syntax_endpoint("robot.py")
         self.assertResponseCode200(code)
