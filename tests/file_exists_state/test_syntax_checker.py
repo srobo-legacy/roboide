@@ -15,6 +15,10 @@ class TestSyntaxChecker(FileAndProjectCreatingTestCase):
         return response.status, json.loads(response.read())
 
     def test_default_file_syntax(self):
+        """
+        Tests that the default created test file contains no errors
+        """
+
         code, dictionary = self.get_check_syntax_endpoint("robot.py")
         self.assertResponseCode200(code)
         self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")

@@ -2,6 +2,10 @@ from tests.project_creating_test_case import ProjectCreatingTestCase
 from roboide import vcs_bzr as bzr
 
 class FileAndProjectCreatingTestCase(ProjectCreatingTestCase):
+    """
+    Creates a project and a robot.py for testing the syntax checker.
+    """
+
     def setUp(self):
         ProjectCreatingTestCase.setUp(self)
         self.projWrite = bzr.ProjectWrite(1, self.project_name)
