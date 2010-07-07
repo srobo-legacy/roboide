@@ -12,7 +12,8 @@ from turbogears import config
 # SR imports
 import roboide.vcs_bzr as vcs_bzr
 import roboide.user as users
-from project_creating_test_case import ProjectCreatingTestCase
+
+from tests.project_creating_test_case import ProjectCreatingTestCase
 
 class TestEmptyProjectFunctions(ProjectCreatingTestCase):
     """
