@@ -8,10 +8,15 @@ class FileAndProjectCreatingTestCase(ProjectCreatingTestCase):
 
     def setUp(self):
         ProjectCreatingTestCase.setUp(self)
-        self.projWrite = bzr.ProjectWrite(1, self.project_name)
+        self.projWrite = bzr.ProjectWrite(self.team, self.project_name, revno=self.rev)
         self.projWrite.update_file_contents("robot.py", "from sr import *\nprint 'ponies'\n")
         self.projWrite.commit("start")
+        self.rev += 1
+        self.projWrite.destroy()
+        self.projWrite = None
 
     def tearDown(self):
-        self.projWrite.destroy()
+        if self.projWrite is not None:
+            self.projWrite.destroy()
+            self.projWrite = None
         ProjectCreatingTestCase.tearDown(self)
