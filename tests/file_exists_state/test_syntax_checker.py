@@ -51,7 +51,7 @@ class TestSyntaxChecker(FileAndProjectCreatingTestCase):
 
     def test_sr_stuff_syntax(self):
         """
-        Test student robotics syntax on yields
+        Test student robotics syntax on yields.
         """
 
         self.asserted_valid_file(self.test_files[1])
