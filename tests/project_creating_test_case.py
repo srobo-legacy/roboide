@@ -20,10 +20,6 @@ class ProjectCreatingTestCase(unittest.TestCase):
         self.repo_handle = vcs_bzr.open_repo(self.team)
 
         #create a project in the teams repo
-        #open the teams repo
-        self.repo_handle = vcs_bzr.open_repo(self.team)
-
-        #create a project in the teams repo
         proj_url = users.get_repopath(self.team) + "/" + self.project_name
         self.repo_handle.bzrdir.create_branch_convenience(base=proj_url,force_new_tree=False)
 
