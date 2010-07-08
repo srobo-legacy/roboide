@@ -47,7 +47,8 @@ class TestSyntaxChecker(FileAndProjectCreatingTestCase):
 
     def test_valid_syntax(self):
         """
-        Verifies the syntax of all the valid syntax files defined in this test
+        Verifies the syntax of all the valid syntax files defined in this
+        TestCase
         """
 
         for file in self.valid_syntax_test_files:
