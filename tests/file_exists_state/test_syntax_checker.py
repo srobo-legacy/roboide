@@ -4,7 +4,11 @@ import time
 import roboide.vcs_bzr as bzr
 
 class TestSyntaxChecker(FileAndProjectCreatingTestCase):
-    test_files = ["tests/resources/syntax/1.py", "tests/resources/syntax/2.py", "tests/resources/syntax/3.py"]
+    valid_syntax_test_files = [
+                              "tests/resources/syntax/1.py",
+                              "tests/resources/syntax/2.py",
+                              "tests/resources/syntax/3.py"
+                             ]
 
     def get_check_syntax_endpoint(self, filename):
         self.connection.request("GET", "/checkcode?team=%d&path=%s&date=%d" % (
@@ -33,25 +37,14 @@ class TestSyntaxChecker(FileAndProjectCreatingTestCase):
         code, dictionary = self.get_check_syntax_endpoint("robot.py")
         self.assertResponseCode200(code)
         self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
+        self.projWrite.destroy()
+        self.rev += 1
 
 
-    def test_control_flow_statements_syntax(self):
+    def test_valid_syntax(self):
         """
-        Verifies control statements (if, else, elif) with the syntax checker.
-        """
-
-        self.asserted_valid_file(self.test_files[0])
-
-    def test_loop_statements_syntax(self):
-        """
-        Verifies loop statements (for, while) with the syntax checker.
+        Verifies the syntax of all the valid syntax files defined in this test
         """
 
-        self.asserted_valid_file(self.test_files[1])
-
-    def test_sr_stuff_syntax(self):
-        """
-        Test student robotics syntax on yields.
-        """
-
-        self.asserted_valid_file(self.test_files[1])
+        for file in self.valid_syntax_test_files:
+           self.asserted_valid_file(file)
