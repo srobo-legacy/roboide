@@ -5,10 +5,10 @@ import roboide.vcs_bzr as bzr
 
 class TestSyntaxChecker(FileAndProjectCreatingTestCase):
     valid_syntax_test_files = [
-                              "tests/resources/syntax/1.py",
-                              "tests/resources/syntax/2.py",
-                              "tests/resources/syntax/3.py"
-                             ]
+                                  "tests/resources/syntax/1.py",
+                                  "tests/resources/syntax/2.py",
+                                  "tests/resources/syntax/3.py"
+                              ]
 
     def get_check_syntax_endpoint(self, filename):
         self.connection.request("GET", "/checkcode?team=%d&path=%s&date=%d" % (
