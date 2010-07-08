@@ -31,15 +31,14 @@ class TestSyntaxChecker(FileAndProjectCreatingTestCase):
         self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
 
     def asserted_valid_file(self, syntax_file_name):
-        self.projWrite = bzr.ProjectWrite(self.team, self.project_name, revno=self.rev)
-        self.projWrite.update_file_contents("robot.py", open(syntax_file_name).read())
-        self.projWrite.commit("update")
+        projWrite = bzr.ProjectWrite(self.team, self.project_name, revno=self.rev)
+        projWrite.update_file_contents("robot.py", open(syntax_file_name).read())
+        projWrite.commit("update")
         code, dictionary = self.get_check_syntax_endpoint("robot.py")
         self.assertResponseCode200(code)
         self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
-        self.projWrite.destroy()
+        projWrite.destroy()
         self.rev += 1
-
 
     def test_valid_syntax(self):
         """
