@@ -10,6 +10,10 @@ class TestSyntaxChecker(FileAndProjectCreatingTestCase):
                                   "tests/resources/syntax/3.py"
                               ]
 
+    invalid_syntax_test_files = [
+                                    "tests/resources/syntax/4.py"
+                                ]
+
     def get_check_syntax_endpoint(self, filename):
         self.connection.request("GET", "/checkcode?team=%d&path=%s&date=%d" % (
                 self.team,
@@ -53,3 +57,12 @@ class TestSyntaxChecker(FileAndProjectCreatingTestCase):
 
         for file in self.valid_syntax_test_files:
            self.asserted_valid_file(file)
+
+    def test_invalid_file_syntax(self):
+        """
+        Verifies the (invalidness) syntax of all invalid syntax files defined
+        in this TestCase
+        """
+
+        for file in self.invalid_syntax_test_files:
+            self.asserted_valid_file(file, False)
