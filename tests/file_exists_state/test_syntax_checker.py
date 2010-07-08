@@ -30,13 +30,18 @@ class TestSyntaxChecker(FileAndProjectCreatingTestCase):
         self.assertResponseCode200(code)
         self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
 
-    def asserted_valid_file(self, syntax_file_name):
+    def asserted_valid_file(self, syntax_file_name, valid=True):
         projWrite = bzr.ProjectWrite(self.team, self.project_name, revno=self.rev)
         projWrite.update_file_contents("robot.py", open(syntax_file_name).read())
         projWrite.commit("update")
         code, dictionary = self.get_check_syntax_endpoint("robot.py")
         self.assertResponseCode200(code)
-        self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
+
+        if valid:
+            self.assertEqual(int(dictionary["errors"]), 0, "file contained errors")
+        else:
+            self.assertNotEqual(int(dictionary["errors"]), 0, "file contained no errors")
+
         projWrite.destroy()
         self.rev += 1
 
