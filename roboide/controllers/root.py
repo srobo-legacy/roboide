@@ -464,7 +464,6 @@ class RootController(BaseController):
         finally:
             projWrite.destroy()
 
-
         return dict(new_revision=str(newrevno), code=code,
                     success=success, file=filepath, reloadfiles=reloadfiles)
 

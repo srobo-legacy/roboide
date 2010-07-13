@@ -1,3 +1,7 @@
 devdata.sqlite
 repos
 roboid
+testdata.sqlite
+test.cfg
+test-repos
+roboid

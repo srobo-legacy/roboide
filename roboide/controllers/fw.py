@@ -1,10 +1,9 @@
-
-# Turbogears imports
-from tg import config, expose, response
-from roboide import model
-
-# Standard library imports
-import sha, datetime, time
+from turbogears import config, expose
+import model
+import cherrypy
+import sr
+import datetime, time
+from hashlib import sha1 as sha
 import os.path
 
 # Import SR code
