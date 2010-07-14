@@ -34,8 +34,7 @@ if __name__ == "__main__":
     else:
         sys.exit('No config file specified')
 
-    ide_run_cmd = './start-roboide.py'
-    run_proc = subprocess.Popen([ide_run_cmd, sys.argv[1]],
+    run_proc = subprocess.Popen(["paster", "serve", sys.argv[1]],
                                 stdout = subprocess.PIPE,
                                 stderr = subprocess.PIPE)
 
