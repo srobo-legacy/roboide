@@ -1,7 +1,6 @@
 from turbogears import config, expose
-import model
+from roboide import model
 import cherrypy
-import sr
 import datetime, time
 from hashlib import sha1 as sha
 import os.path
