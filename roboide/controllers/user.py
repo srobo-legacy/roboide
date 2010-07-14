@@ -76,11 +76,11 @@ class User(object):
     @expose("json")
     def login(self, usr="",pwd=""):
         """Logs the given user in with the given password.
-        Returns SUCCESS if authentication was successful, and FAIL if 
+        Returns SUCCESS if authentication was successful, and FAIL if
         it was unsuccessful.
         If no username and password are given, then SUCCESS is
         returned if we're already logged in -- otherwise FAIL.
-        
+
         Where: SUCCESS is {"login":1}
         and FAIL is {"login":0}"""
 
