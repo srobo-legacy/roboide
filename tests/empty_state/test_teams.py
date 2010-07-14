@@ -5,8 +5,7 @@ import httplib
 import json
 import helpers
 
-# TurboGears imports
-from turbogears import config
+from helpers.confighelper import global_config_helper
 
 class TestTeamFunctions(unittest.TestCase):
     """
@@ -14,8 +13,8 @@ class TestTeamFunctions(unittest.TestCase):
     """
 
     def setUp(self):
-        port =  config.get('server.socket_port')
-        host =  config.get('server.socket_host')
+        port = global_config_helper.get('server:main.port')
+        host = global_config_helper.get('server:main.host')
         self.connection = httplib.HTTPConnection(host, port)
 
     def tearDown(self):
