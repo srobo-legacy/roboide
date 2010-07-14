@@ -5,8 +5,8 @@ import sys
 slice_end = __file__.rfind("/");
 sys.path.append(__file__[0:slice_end+1]+"../")
 
-# TurboGears imports
-from turbogears import update_config, config
+# config imports
+from helpers.confighelper import global_config_helper
 
 # Standard imports
 import subprocess
@@ -30,7 +30,7 @@ suite.addTests(unittest.TestLoader().loadTestsFromModule(file_exists_state))
 if __name__ == "__main__":
     #grab the config file
     if len(sys.argv) > 1:
-        update_config(configfile=sys.argv[1],modulename="roboide.config")
+        global_config_helper.update_configuration(sys.argv[1])
     else:
         sys.exit('No config file specified')
 
@@ -40,8 +40,8 @@ if __name__ == "__main__":
                                 stderr = subprocess.PIPE)
 
     #check that the IDE is running
-    port =  config.get('server.socket_port')
-    host =  config.get('server.socket_host')
+    port =  global_config_helper.get('server:main.port')
+    host =  global_config_helper.get('server:main.host')
     conn = httplib.HTTPConnection(host, port)
     done = False
     while not done:
