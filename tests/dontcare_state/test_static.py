@@ -14,7 +14,7 @@ class StaticFilesTest(unittest.TestCase):
         host = global_config_helper.get('server:main.host')
         self.connection = httplib.HTTPConnection(host, port)
         self.files = []
-        os.path.walk("roboide/static/", self.buildfiles, "")
+        os.path.walk("roboide/public/", self.buildfiles, "")
 
     def buildfiles(self, arg, path, names):
         """
@@ -33,7 +33,7 @@ class StaticFilesTest(unittest.TestCase):
     def test_static_files(self):
         """
         Tests the presence of static files, based on the list built up
-        from /roboide/static.
+        from /roboide/public.
         """
 
         for file in self.files:
