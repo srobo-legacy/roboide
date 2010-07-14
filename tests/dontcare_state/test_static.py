@@ -1,9 +1,8 @@
 import unittest
 import httplib
-
-from turbogears import config
-
 import os
+
+from helpers.confighelper import global_config_helper
 
 class StaticFilesTest(unittest.TestCase):
     """
@@ -11,8 +10,8 @@ class StaticFilesTest(unittest.TestCase):
     """
 
     def setUp(self):
-        port = config.get('server.socket_port')
-        host = config.get('server.socket_host')
+        port = global_config_helper.get('server:main.port')
+        host = global_config_helper.get('server:main.host')
         self.connection = httplib.HTTPConnection(host, port)
         self.files = []
         os.path.walk("roboide/static/", self.buildfiles, "")
