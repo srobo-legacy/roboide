@@ -4,7 +4,7 @@ import os
 import subprocess
 
 # roboide imports
-from roboide.user import get_repopath
+from roboide.controllers.user import get_repopath
 
 def get_repo_file_path(team):
     """

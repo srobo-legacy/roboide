@@ -3,7 +3,7 @@ from turbogears import config
 
 # roboide imports
 import roboide.model as model
-from roboide.user import *
+from roboide.controllers.user import *
 
 def get_team_dictionary():
     """

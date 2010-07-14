@@ -10,7 +10,7 @@ import os
 from turbogears import config
 
 # roboide imports
-from roboide.user import get_repopath
+from roboide.controllers.user import get_repopath
 
 class TestProjectFunctions(unittest.TestCase):
     """

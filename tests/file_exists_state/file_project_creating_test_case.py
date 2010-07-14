@@ -1,5 +1,5 @@
 from tests.project_creating_test_case import ProjectCreatingTestCase
-from roboide import vcs_bzr as bzr
+from roboide.controllers import vcs_bzr as bzr
 
 class FileAndProjectCreatingTestCase(ProjectCreatingTestCase):
     """

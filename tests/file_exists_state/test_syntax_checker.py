@@ -1,7 +1,7 @@
 from file_project_creating_test_case import FileAndProjectCreatingTestCase
 import json
 import time
-import roboide.vcs_bzr as bzr
+import roboide.controllers.vcs_bzr as bzr
 
 class TestSyntaxChecker(FileAndProjectCreatingTestCase):
     valid_syntax_test_files = [

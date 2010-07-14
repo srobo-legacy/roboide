@@ -9,8 +9,8 @@ import urllib
 from turbogears import config
 
 # SR imports
-import roboide.vcs_bzr as vcs_bzr
-import roboide.user as users
+import roboide.controllers.vcs_bzr as vcs_bzr
+import roboide.controllers.user as users
 
 class ProjectCreatingTestCase(unittest.TestCase):
     def setUp(self):
